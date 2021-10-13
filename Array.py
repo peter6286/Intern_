@@ -66,6 +66,28 @@ class Solution:
 
         return f"{bull}A{cows-bull}B"
 
+    #Gas station 134
+    #Input: gas = [1,2,3,4,5], cost = [3,4,5,1,2]
+    # Output: 3
+    # Input: gas = [2,3,4], cost = [3,4,3]
+    # Output: -1
+    def gas(self, gas, cost):
+        if (sum(cost)-sum(gas)<0):
+            return -1
+        gas_tank = 0  # gas available in car till now
+        start_index = 0  # Consider first gas station as starting point
+
+        for i in range(len(gas)):
+            gas_tank += gas[i] - cost[i]
+            if gas_tank < 0:  # the car has deficit of petrol
+                start_index = i + 1  # change the starting point
+                gas_tank = 0  # make the current gas to 0, as we will be starting again from next station
+
+        return start_index
+
+
+
+
 
 
 
@@ -78,3 +100,4 @@ print(object.removeDuplicates([0,0,1,1,1,2,2,3,3,4]))
 print(object.removeDuplicates2([0,0,1,1,1,1,2,3,3]))
 print(object.rotate([1,2,3,4,5,6,7],3))
 print(object.getHint("1123","0111"))
+print(object.gas([1,2,3,4,5],[3,4,5,1,2]))
