@@ -27,7 +27,7 @@ class Solution:
 
             if nums[reader] == nums[writer]: #如果一样
                 if count < 2:       #检查是否出现两次
-                    writer += 1
+                    writer += 1     #确定可以写入后再往前
                     nums[writer] = nums[reader]
                     count += 1
             else:       #如果不一样重置count变1
@@ -87,6 +87,45 @@ class Solution:
 
 
 
+    def hIndex(self, citations):
+        if len(citations) == 0:
+            return 0
+
+        res = 0
+        citations.sort(reverse = True)
+
+        if citations[-1] >= len(citations):
+            return len(citations)
+
+        for i in range(1, len(citations)+1):
+            if i > citations[i-1]:
+                res = i-1
+                break
+        return res
+
+    def containduplicate(self,nums):
+        hashNum = {} #hash table
+        for i in nums:
+             if i not in hashNum:
+                hashNum[i] = 1
+             else:
+                return True
+        return False
+
+
+    def canJump(self, nums):
+        reachableIndex = 0
+        if len(nums)==1:
+            return False
+        for curr in range(len(nums)):
+            if curr + nums[curr] >= reachableIndex:
+                reachableIndex = curr + nums[curr]
+            if curr == reachableIndex:
+                break
+        return reachableIndex >=len(nums)-1
+
+
+
 
 
 
@@ -101,3 +140,8 @@ print(object.removeDuplicates2([0,0,1,1,1,1,2,3,3]))
 print(object.rotate([1,2,3,4,5,6,7],3))
 print(object.getHint("1123","0111"))
 print(object.gas([1,2,3,4,5],[3,4,5,1,2]))
+print(object.hIndex([3,0,6,1,5]))
+print(object.hIndex([7,8,9]))
+print(object.containduplicate([1,2,3,1]))
+print(object.canJump([2,3,1,1,4]))
+print(object.canJump([3,2,1,0,4]))
