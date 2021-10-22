@@ -125,9 +125,35 @@ class Solution:
         return reachableIndex >=len(nums)-1
 
 
+    def jump(self, nums):
+        if len(nums)==1:
+            return 0
 
+        reachableIndex = 0
+        bestReachableIndex = 0
+        jump = 0
 
+        for curr in range(len(nums)):
+            temp= nums[curr]
+            if curr + nums[curr] >= reachableIndex:
+                reachableIndex = curr + nums[curr]
 
+            if curr == bestReachableIndex:          #到位置后要么step加一
+                jump += 1
+                bestReachableIndex = reachableIndex
+                if bestReachableIndex >= len(nums) - 1:
+                    return jump
+
+    def maxProfit(self, prices):
+        if not prices:
+            return 0
+
+        maxProfit = 0
+        minPurchase = prices[0]
+        for i in range(1, len(prices)):
+            maxProfit = max(maxProfit, prices[i] - minPurchase)
+            minPurchase = min(minPurchase, prices[i])
+        return maxProfit
 
 
 
@@ -145,3 +171,6 @@ print(object.hIndex([7,8,9]))
 print(object.containduplicate([1,2,3,1]))
 print(object.canJump([2,3,1,1,4]))
 print(object.canJump([3,2,1,0,4]))
+print(object.jump([2,1,1,3,4]))
+print(object.jump([2,3,0,1,4]))
+print(object.maxProfit([7,1,5,3,6,4]))
