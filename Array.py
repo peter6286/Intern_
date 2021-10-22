@@ -86,7 +86,7 @@ class Solution:
         return start_index
 
 
-
+    ###不会
     def hIndex(self, citations):
         if len(citations) == 0:
             return 0
@@ -116,11 +116,11 @@ class Solution:
     def canJump(self, nums):
         reachableIndex = 0
         if len(nums)==1:
-            return False
+            return True
         for curr in range(len(nums)):
             if curr + nums[curr] >= reachableIndex:
-                reachableIndex = curr + nums[curr]
-            if curr == reachableIndex:
+                reachableIndex = curr + nums[curr] #更新最新的reachable
+            if curr == reachableIndex:  #如果没有变化给他掐断/到了最尾巴
                 break
         return reachableIndex >=len(nums)-1
 

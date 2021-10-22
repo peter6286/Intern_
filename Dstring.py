@@ -43,24 +43,47 @@ class Solution:
                     return s
         return s
 
-    def hIndex(self, citations):
-        if len(citations) == 0:
-            return 0
+    # 58. Length of Last Word
+    # Input: s = "Hello World" Output: 5
+    # Input: s = "   fly me   to   the moon  " Output: 4
 
-        res = 0
-        citations.sort(reverse = True)
+    def lengthOfLastWord(self, s):
+        wordlist = s.split() #split 以后变为list忽略空格
+        #print(wordlist)
+        if wordlist:
+            return len(wordlist[-1])
+        return 0
 
-        if citations[-1] >= len(citations):
-            return len(citations)
+    # 387. First Unique Character in a String
+    # Input: s = "leetcode"  Output: 0
+    # Input: s = "loveleetcode"  Output: 2
 
-        for i in range(1, len(citations)+1):
-            if i > citations[i-1]:
-                res = i-1
+    def firstUniqChar(self, s: str) -> int:
+        d = {}
+        index = -1
+        for l in s:
+            if l not in d:
+                d[l] = 1
+            else:
+                d[l] += 1
+        for i in range(len(s)):
+            if d[s[i]] == 1:
+                index = i
                 break
-        return res
+        return index
+
+    def canConstruct(self, ransomNote, magazine):
+        for i in set(ransomNote):
+            if magazine.count(i) < ransomNote.count(i):
+                return False
+        return True
+
 
 
 object=Solution()
 strs = ["flower","flow","flight"]
 print(object.strStr("hello","ll"))
 print(object.longestCommonPrefix(strs))
+print(object.lengthOfLastWord("  Fly me to the moon"))
+print(object.firstUniqChar("eetcode"))
+print(object.canConstruct("aa","aab"))
