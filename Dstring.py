@@ -58,7 +58,7 @@ class Solution:
     # Input: s = "leetcode"  Output: 0
     # Input: s = "loveleetcode"  Output: 2
 
-    def firstUniqChar(self, s: str) -> int:
+    def firstUniqChar(self, s):
         d = {}
         index = -1
         for l in s:
