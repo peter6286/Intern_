@@ -58,7 +58,7 @@ class Solution:
     # Input: s = "leetcode"  Output: 0
     # Input: s = "loveleetcode"  Output: 2
 
-    def firstUniqChar(self, s: str) -> int:
+    def firstUniqChar(self, s):
         d = {}
         index = -1
         for l in s:
@@ -72,12 +72,43 @@ class Solution:
                 break
         return index
 
+    # 383. Ransom Note
+    # Input: ransomNote = "a", magazine = "b"  Output: false
+    # Input: ransomNote = "aa", magazine = "ab" Output: false
+    # Input: ransomNote = "aa", magazine = "aab" Output: true
+
     def canConstruct(self, ransomNote, magazine):
         for i in set(ransomNote):
             if magazine.count(i) < ransomNote.count(i):
                 return False
         return True
 
+    # 344. Reverse String
+    # Input: s = ["h","e","l","l","o"]    Output: ["o","l","l","e","h"]
+    # Input: s = ["H","a","n","n","a","h"]  Output: ["h","a","n","n","a","H"]
+
+    def reverseString(self, s):
+        # one points to head position, the other points to tail position
+        left, right = 0, len(s) - 1
+
+        # reverse string by two pointers
+        while left < right:
+            s[left], s[right] = s[right], s[left]
+
+            left, right = left + 1, right - 1
+        return s
+
+    #151. Reverse Words in a String
+    #Input: s = "the sky is blue"   Output: "blue is sky the"
+    # Input: s = "  hello world  "  Output: "world hello"
+
+    def reverseWords(self, s):
+        str = " "
+        split2list =s.split()
+        rev = split2list[::-1]
+        tostr = str.join(rev)
+        result = tostr.strip()
+        return result
 
 
 object=Solution()
@@ -87,3 +118,6 @@ print(object.longestCommonPrefix(strs))
 print(object.lengthOfLastWord("  Fly me to the moon"))
 print(object.firstUniqChar("eetcode"))
 print(object.canConstruct("aa","aab"))
+print(object.reverseString(["h","e","l","l","o"]))
+print(object.reverseWords("the sky is blue"))
+print()

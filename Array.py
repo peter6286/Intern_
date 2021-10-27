@@ -103,6 +103,9 @@ class Solution:
                 break
         return res
 
+    #217. Contains Duplicate
+    # Input: nums = [1,2,3,1]   Output: true
+    # Input: nums = [1,1,1,3,3,4,3,2,4,2]   Output: true
     def containduplicate(self,nums):
         hashNum = {} #hash table
         for i in nums:
@@ -112,6 +115,9 @@ class Solution:
                 return True
         return False
 
+    # 55. Jump Game
+    # Input: nums = [2,3,1,1,4]    Output: true
+    # Input: nums = [3,2,1,0,4]    Output: false
 
     def canJump(self, nums):
         reachableIndex = 0
@@ -124,7 +130,7 @@ class Solution:
                 break
         return reachableIndex >=len(nums)-1
 
-
+    #不会
     def jump(self, nums):
         if len(nums)==1:
             return 0
@@ -144,10 +150,13 @@ class Solution:
                 if bestReachableIndex >= len(nums) - 1:
                     return jump
 
+    #Best Time to Buy and Sell Stock 121
+    # Input: prices = [7,1,5,3,6,4]    Output: 5
+    #Input: prices = [7, 6, 4, 3, 1]   Output: 0
+
     def maxProfit(self, prices):
         if not prices:
             return 0
-
         maxProfit = 0
         minPurchase = prices[0]
         for i in range(1, len(prices)):
