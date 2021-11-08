@@ -154,7 +154,7 @@ class Solution:
     # Input: prices = [7,1,5,3,6,4]    Output: 5
     #Input: prices = [7, 6, 4, 3, 1]   Output: 0
 
-    def maxProfit(self, prices):
+    def maxProfit1(self, prices):
         if not prices:
             return 0
         maxProfit = 0
@@ -164,9 +164,84 @@ class Solution:
             minPurchase = min(minPurchase, prices[i])
         return maxProfit
 
+    # Best Time to Buy and Sell Stock II 122.
+    #Input: prices = [7,1,5,3,6,4]   Output: 7
+    # Input: prices = [1,2,3,4,5]  Output: 4
+    def maxProfit2(self, prices):
+        if len(prices) == 1: # edge case
+            return 0
+
+        # take down positive daily return only
+        profit = []
+        for i in range(1, len(prices)):
+            profit.append(max(0, prices[i] - prices[i-1]))
+        return sum(profit)
 
 
 
+    '''  不会
+    # 188. Best Time to Buy and Sell Stock IV
+    # Input: k = 2, prices = [2,4,1]   Output: 2
+    # Input: k = 2, prices = [3,2,6,5,0,3] Output: 7
+    
+    def maxProfit3(self, prices):
+        if not prices:
+            return 0
+    # forward traversal, profits record the max profit
+    # by the ith day, this is the first transaction
+        profits = []
+        max_profit = 0
+        current_min = prices[0]
+        for price in prices:
+            current_min = min(current_min, price)
+            max_profit = max(max_profit, price - current_min)
+            profits.append(max_profit)
+    # backward traversal, max_profit records the max profit
+    # after the ith day, this is the second transaction
+        total_max = 0
+        max_profit = 0
+        current_max = prices[-1]
+        for i in range(len(prices) - 1, -1, -1):
+            current_max = max(current_max, prices[i])
+            max_profit = max(max_profit, current_max - prices[i])
+            total_max = max(total_max, max_profit + profits[i])
+
+        return total_max
+    '''
+
+    def maxArea(self, height):
+
+        # length of input array
+        size = len(height)
+
+        # two pointers, left init as 0, right init as size-1
+        left, right = 0, size-1
+
+        # maximal width between leftmost stick and rightmost stick
+        max_width = size - 1
+
+        # area also known as the amount of water
+        area = 0
+
+        # trade-off between width and height
+        # scan each possible width and compute maximal area
+        for width in range(max_width, 0, -1):
+
+            if height[left] < height[right]:
+                # the height of lefthand side is shorter
+                area = max(area, width * height[left])
+
+                # update left index to righthand side
+                left += 1
+
+            else:
+                # the height of righthand side is shorter
+                area = max(area, width * height[right])
+
+                # update right index to lefthand side
+                right -= 1
+
+        return area
 
 object = Solution()
 print(object.removeElement([0,1,2,2,3,0,4,2], 2))
@@ -182,4 +257,6 @@ print(object.canJump([2,3,1,1,4]))
 print(object.canJump([3,2,1,0,4]))
 print(object.jump([2,1,1,3,4]))
 print(object.jump([2,3,0,1,4]))
-print(object.maxProfit([7,1,5,3,6,4]))
+#print(object.maxProfit([7,1,5,3,6,4]))
+#print(object.maxProfit3([3,3,5,0,0,3,1,4]))
+print(object.maxArea([1,8,6,2,5,4,8,3,7]))
