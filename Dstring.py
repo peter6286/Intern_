@@ -111,6 +111,29 @@ class Solution:
         return result
 
 
+    #345. Reverse Vowels of a String
+    # Input: s = "hello"   Output: "holle"
+    #Input: s = "leetcode"   Output: "leotcede"
+
+    
+    def reverseVowels(self, s):
+        s = list(s)
+        vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']
+        i, j = 0, len(s) - 1
+        while i < j:
+            if s[i] not in vowels:   #往前开始不是vowels就往前一位
+                i += 1
+                continue
+            if s[j] not in vowels:  #往后开始不是vowels就往后一位
+                j -= 1
+                continue
+            s[i], s[j] = s[j], s[i]  #如果是vowels的话换位置
+            i += 1
+            j -= 1
+
+        return ''.join(s)
+
+
 object=Solution()
 strs = ["flower","flow","flight"]
 print(object.strStr("hello","ll"))
@@ -120,4 +143,4 @@ print(object.firstUniqChar("eetcode"))
 print(object.canConstruct("aa","aab"))
 print(object.reverseString(["h","e","l","l","o"]))
 print(object.reverseWords("the sky is blue"))
-print()
+print(object.reverseVowels("hello"))
