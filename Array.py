@@ -209,6 +209,11 @@ class Solution:
         return total_max
     '''
 
+    # 11. Container With Most Water
+    # Input: height = [1,1]  Output: 1
+    # Input: height = [4,3,2,1,4]  Output: 16
+
+
     def maxArea(self, height):
 
         # length of input array
@@ -243,6 +248,24 @@ class Solution:
 
         return area
 
+
+    # 334. Increasing Triplet Subsequence
+    # Input: nums = [1,2,3,4,5]   Output: true
+    # Input: nums = [5,4,3,2,1]   Output: false
+    # Input: nums = [2,1,5,0,4,6]   Output: true
+
+    def increasingTriplet(self, nums):
+        first = second = float('inf')
+        for n in nums:
+            if n <= first:
+                first = n
+            elif n <= second:
+                second = n
+            else:
+                return True
+        return False
+
+
 object = Solution()
 print(object.removeElement([0,1,2,2,3,0,4,2], 2))
 print(object.removeDuplicates([0,0,1,1,1,2,2,3,3,4]))
@@ -260,3 +283,4 @@ print(object.jump([2,3,0,1,4]))
 #print(object.maxProfit([7,1,5,3,6,4]))
 #print(object.maxProfit3([3,3,5,0,0,3,1,4]))
 print(object.maxArea([1,8,6,2,5,4,8,3,7]))
+print(object.increasingTriplet([2,1,5,0,4,6]))

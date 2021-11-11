@@ -133,6 +133,30 @@ class Solution:
 
         return ''.join(s)
 
+    # 205. Isomorphic Strings
+    # Input: s = "egg", t = "add"    Output: true
+    # Input: s = "foo", t = "bar"    Output: false
+    # Input: s = "paper", t = "title"  Output: true
+
+
+
+    def isIsomorphic(self, s, t):
+        s2t, t2s = {}, {}
+        for i in range(len(s)):
+            if s[i] in s2t and s2t[s[i]] != t[i]:  #判断pattern有没有形成
+                return False
+            if t[i] in t2s and t2s[t[i]] != s[i]:
+                return False
+            s2t[s[i]] = t[i]   #在dicationary给对应的值
+            t2s[t[i]] = s[i]
+        return True
+
+
+
+
+
+
+
 
 object=Solution()
 strs = ["flower","flow","flight"]
@@ -144,3 +168,5 @@ print(object.canConstruct("aa","aab"))
 print(object.reverseString(["h","e","l","l","o"]))
 print(object.reverseWords("the sky is blue"))
 print(object.reverseVowels("hello"))
+print(object.isIsomorphic("egg","add"))
+print(object.isIsomorphic("foo","bar"))

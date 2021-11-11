@@ -25,12 +25,12 @@ class Solution:
         right = len(nums)-1
         while left <= right:
             mid=(left+right)//2
-            if nums[mid] == target:
-                return mid
             if nums[mid] < target:
                 left = mid+1
+            if nums[mid] > target:
+                right = mid - 1
             else:
-                right = mid-1
+               return mid
         return left
 
     #278. First Bad Version
@@ -146,10 +146,20 @@ class Solution:
             s = numbers[l] + numbers[r]
             if s < target:
                 l+=1            #往右缩近加大，往左移动减小
-            elif s > right:
+            elif s > r:
                 r-=1
             else:
                 return [l + 1, r + 1]
+
+    def reverseWords(self, s):
+        tolist = s.split(" ")
+        for i in range (len(tolist)):
+            tolist[i] = tolist[i][::-1]
+        return " ".join(tolist)
+
+
+
+
 
 
 object = Solution()
@@ -158,3 +168,4 @@ print(object.searchInsert([1,3,5,6],5))
 print(object.sortsq([-4,-1,0,3,10] ))
 print(object.rotate([1,2,3,4,5,6,7],3))
 print(object.moveZeroes([0,1,0,3,12]))
+print(object.reverseWords("Let's take LeetCode contest"))
