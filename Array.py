@@ -266,6 +266,21 @@ class Solution:
         return False
 
 
+    #128. Longest Consecutive Sequence
+    # Input: nums = [100,4,200,1,3,2]   Output: 4
+    # Input: nums = [0,3,7,2,5,8,4,6,0,1] Output: 9
+    def longestConsecutive(self, nums):
+        nums.sort()
+        longest, cur_longest = 0, min(1, len(nums))
+        for i in range(1,len(nums)):
+            if nums[i] == nums[i - 1] :
+                continue
+            if nums[i] == nums[i - 1] + 1:
+                cur_longest += 1
+            else:
+                longest, cur_longest = max(longest, cur_longest), 1
+        return max(longest, cur_longest)
+
 object = Solution()
 print(object.removeElement([0,1,2,2,3,0,4,2], 2))
 print(object.removeDuplicates([0,0,1,1,1,2,2,3,3,4]))
@@ -284,3 +299,4 @@ print(object.jump([2,3,0,1,4]))
 #print(object.maxProfit3([3,3,5,0,0,3,1,4]))
 print(object.maxArea([1,8,6,2,5,4,8,3,7]))
 print(object.increasingTriplet([2,1,5,0,4,6]))
+print(object.longestConsecutive([100,4,200,1,3,2]))

@@ -220,10 +220,6 @@ class Solution:
 
 
 
-
-
-
-
 object = Solution()
 print(object.search([1,3,5,6],5))
 print(object.searchInsert([1,3,5,6],5))
