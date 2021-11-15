@@ -1,3 +1,6 @@
+from collections import Counter
+
+
 class Solution:
     # 704. Binary Search
     # Input: nums = [-1,0,3,5,9,12], target = 9   Output: 4
@@ -151,11 +154,70 @@ class Solution:
             else:
                 return [l + 1, r + 1]
 
+
+    # 344. Reverse String
+    # Input: s = ["h","e","l","l","o"]   Output: ["o","l","l","e","h"]
+    # Input: s = ["H","a","n","n","a","h"]  Output: ["h","a","n","n","a","H"]
+
+    def reverseString(self, s):
+        left = 0
+        right = len(s)-1
+        while left < right :
+            s[left],s[right]=s[right],s[left]
+            left,right = left+1,right-1
+
+        return s
+
+
+    # 557. Reverse Words in a String III
+    # Input: s = "Let's take LeetCode contest"    Output: "s'teL ekat edoCteeL tsetnoc"
+    # Input: s = "God Ding"      Output: "doG gniD"
+
     def reverseWords(self, s):
         tolist = s.split(" ")
         for i in range (len(tolist)):
             tolist[i] = tolist[i][::-1]
         return " ".join(tolist)
+    #3. Longest Substring Without Repeating Characters
+    # Input: s = "abcabcbb"   Output: 3
+    # Input: s = "bbbbb"     Output: 1
+    # Input: s = "pwwkew"   Output: 3
+
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int abcabcbb
+        """
+        seen = {}
+        l = 0
+        output = 0
+        for r in range(len(s)):
+            if s[r] not in seen:    # If s[r] not in seen, we can keep increasing the window size by moving right pointer
+                output = max(output,r-l+1)
+            else:   # There are two cases if s[r] in seen
+                if seen[s[r]] < l: # s[r] is not inside the current window, we can keep increase the window
+                    output = max(output,r-l+1)
+                else:   #s[r] is inside the current window, we need to change the window by moving left pointer to seen[s[r]] + 1
+                    l = seen[s[r]] + 1
+            seen[s[r]] = r
+        return output
+
+
+    #567. Permutation in String
+    # Input: s1 = "ab", s2 = "eidbaooo"  Output: true
+    # Input: s1 = "ab", s2 = "eidboaoo"  Output: false
+    def checkInclusion(self, s1, s2):
+        window = len(s1)
+        s1_c = Counter(s1)  #create a dictionary for s1
+        print(s1_c)
+
+        for i in range(len(s2)-window+1):       #how many time they need to get compared
+            s2_c = Counter(s2[i:i+window])      #creare an dictioanry for s2
+            print(s2_c)
+            if s2_c == s1_c:       #compare two dictioary if they had the same pattern
+                return True
+        return False
+
 
 
 
@@ -169,3 +231,5 @@ print(object.sortsq([-4,-1,0,3,10] ))
 print(object.rotate([1,2,3,4,5,6,7],3))
 print(object.moveZeroes([0,1,0,3,12]))
 print(object.reverseWords("Let's take LeetCode contest"))
+print(object.lengthOfLongestSubstring("pwwkew"))
+print(object.checkInclusion("ab","eidbaooo"))

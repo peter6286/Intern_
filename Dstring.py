@@ -138,8 +138,6 @@ class Solution:
     # Input: s = "foo", t = "bar"    Output: false
     # Input: s = "paper", t = "title"  Output: true
 
-
-
     def isIsomorphic(self, s, t):
         s2t, t2s = {}, {}
         for i in range(len(s)):
