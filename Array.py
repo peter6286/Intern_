@@ -240,13 +240,9 @@ class Solution:
                 left += 1
 
             else:
-                # the height of righthand side is shorter
-                area = max(area, width * height[right])
-
-                # update right index to lefthand side
-                right -= 1
-
-        return area
+                area = max(area,width*height[right])
+                right-=1
+        return  area
 
 
     # 334. Increasing Triplet Subsequence
@@ -266,6 +262,24 @@ class Solution:
         return False
 
 
+
+    #334. Increasing Triplet Subsequence
+    #Input: nums = [1,2,3,4,5]    Output: true
+    #Input: nums = [5,4,3,2,1]    Output: false
+    #Input: nums = [2,1,5,0,4,6]   Output: true
+
+    def increasingTriplet(self,nums):
+        first = second = float('inf')   #将第一个和第二个设置为无限
+        for n in nums:
+            if n <= first:          #如果比之前的小就重新设置
+                first = n
+            elif n <= second:       #接下来重新设置第二个
+                second = n
+            else:                   #出现比第一个和第二个大的数
+                return True
+        return False
+
+
     #128. Longest Consecutive Sequence
     # Input: nums = [100,4,200,1,3,2]   Output: 4
     # Input: nums = [0,3,7,2,5,8,4,6,0,1] Output: 9
@@ -280,6 +294,87 @@ class Solution:
             else:
                 longest, cur_longest = max(longest, cur_longest), 1
         return max(longest, cur_longest)
+
+    # 287. Find the Duplicate Number
+    # Input: nums = [1,3,4,2,2]       Output: 2
+    # Input: nums = [3,1,3,4,2]       Output: 3
+    # Input: nums = [1,1]             Output: 1
+
+
+    def findDuplicate(self, nums):
+        nums_dict = {}
+        for item in nums :
+            if item not in nums_dict:
+                nums_dict[item]=1
+            else:
+                return item
+
+    # 289. Game of Life
+
+    # Input: board = [[0,1,0],[0,0,1],[1,1,1],[0,0,0]]
+    # Output: [[0,0,0],[1,0,1],[0,1,1],[0,1,0]]
+
+    # Input: board = [[1,1],[1,0]]
+    # Output: [[1,1],[1,1]]
+    def gameOfLife(self, board):
+            """
+            Do not return anything, modify board in-place instead.
+            """
+            ## RC ##
+            ## APPRAOCH : IN-PLACE MANIPULATION ##
+            ##  when the value needs to be updated, we donot just change  0 to 1 / 1 to 0
+            ##  but we do in increments and decrements of 2. (table explains)
+            ##   previous value state change  current state   current value
+            ##   0              no change     dead            0
+            ##   1              no change     live            1
+            ##   0              changed (+2)  live            2
+            ##   1              changed (-2)  dead            -1
+
+            ## TIME COMPLEXITY : O(MxN) ##
+            ## SPACE COMPLEXITY : O(1) ##
+
+            directions = [(1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1)]
+
+            for i in range(len(board)):
+                for j in range(len(board[0])):
+                    live = 0  # live neighbors count
+                    for x, y in directions:  # check and count neighbors in all directions
+                        if (i + x < len(board) and i + x >= 0) and (j + y < len(board[0]) and j + y >= 0) and abs(
+                                board[i + x][j + y]) == 1:
+                            live += 1
+                    if board[i][j] == 1 and (live < 2 or live > 3):  # Rule 1 or Rule 3
+                        board[i][j] = -1
+                    if board[i][j] == 0 and live == 3:  # Rule 4
+                        board[i][j] = 2
+            for i in range(len(board)):
+                for j in range(len(board[0])):
+                    board[i][j] = 1 if (board[i][j] > 0) else 0
+            return board
+
+
+
+    # 53. Maximum Subarray
+    # Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+    # Output: 6
+    # Explanation: [4,-1,2,1] has the largest sum = 6.
+
+    # Input: nums = [5,4,-1,7,8]
+    # Output: 23
+
+    def maxSubArray(self, nums):
+        if not nums:
+            return 0
+        curSum = maxSum = nums[0]
+        for num in nums[1:]:
+            tempsum = curSum + num  # 到这个点为止最优的所有index的合
+            curSum = max(num, tempsum)  # 比较是加上num后大（有负数）还是原本数字大。取value大的为新的current
+            maxSum = max(maxSum, curSum)  # 更新最优的总数
+
+        return maxSum
+
+
+
+
 
 object = Solution()
 print(object.removeElement([0,1,2,2,3,0,4,2], 2))
@@ -298,5 +393,9 @@ print(object.jump([2,3,0,1,4]))
 #print(object.maxProfit([7,1,5,3,6,4]))
 #print(object.maxProfit3([3,3,5,0,0,3,1,4]))
 print(object.maxArea([1,8,6,2,5,4,8,3,7]))
+print(object.increasingTriplet([5,4,6,3,2,1]))
 print(object.increasingTriplet([2,1,5,0,4,6]))
 print(object.longestConsecutive([100,4,200,1,3,2]))
+print(object.findDuplicate([1,1]))
+print(object.gameOfLife([[0,1,0],[0,0,1],[1,1,1],[0,0,0]]))
+print(object.maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))

@@ -178,6 +178,8 @@ class Solution:
         for i in range (len(tolist)):
             tolist[i] = tolist[i][::-1]
         return " ".join(tolist)
+
+
     #3. Longest Substring Without Repeating Characters
     # Input: s = "abcabcbb"   Output: 3
     # Input: s = "bbbbb"     Output: 1
@@ -220,12 +222,134 @@ class Solution:
 
 
 
+    #876. Middle of the Linked List
+    # Input: head = [1,2,3,4,5]    Output: [3,4,5]
+    # Input: head = [1,2,3,4,5,6]   Output: [4,5,6]
+
+    def middleNode(self, head):
+        slow, fast = head, head
+
+        while fast:
+
+            fast = fast.next
+            if fast:
+                fast = fast.next
+            else:
+                # fast has reached the end of linked list
+                # slow is on the middle point now
+                break
+            slow = slow.next
+        return slow
+
+    # 19. Remove Nth Node From End of List
+    # Input: head = [1,2,3,4,5], n = 2   Output: [1,2,3,5]
+    # Input: head = [1], n = 1      Output: []
+    # Input: head = [1,2], n = 1    Output: [1]
+
+    def removeNthFromEnd(self, head, n):
+        fast = head
+        slow = head
+        # advance fast to nth position
+        for i in range(n):
+            fast = fast.next
+
+        if not fast:
+            return head.next
+        # then advance both fast and slow now they are nth postions apart
+        # when fast gets to None, slow will be just before the item to be deleted
+        while fast.next:
+            slow = slow.next
+            fast = fast.next
+        # delete the node
+        slow.next = slow.next.next
+        return head
+
+
+
+
+    #733. Flood Fill
+    #Input: image = [[1,1,1],[1,1,0],[1,0,1]], sr = 1, sc = 1, newColor = 2
+    #Output: [[2,2,2],[2,2,0],[2,0,1]]
+    #Input: image = [[0,0,0],[0,0,0]], sr = 0, sc = 0, newColor = 2
+    #Output: [[2,2,2],[2,2,2]]
+
+
+    def floodFill(self, image, sr, sc, newColor):
+        h, w = len(image), len(image[0])
+
+        visited = set()
+
+        def dfs(r, c, src_color, new_color):
+            if r < 0 or c < 0 or r >= h or c >= w or (r, c) in visited or image[r][c] != src_color:
+                # Reject for invalid coordination, repeated traversal, or different color
+                return
+
+            # update color
+            image[r][c] = new_color
+
+            # mark current coordination as visited
+            visited.add((r, c))
+
+            # DFS to 4-connected neighbors
+            dfs(r - 1, c, src_color, new_color)
+            dfs(r + 1, c, src_color, new_color)
+            dfs(r, c - 1, src_color, new_color)
+            dfs(r, c + 1, src_color, new_color)
+
+        # ---------------------------------------------------------------------------
+
+        dfs(sr, sc, image[sr][sc], newColor)
+
+        return image
+
+    # 695. Max Area of Island
+    '''
+    Input: grid = [[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+                   [0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0],
+                   [0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                   [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0]]
+    Output: 6
+    '''
+    # Input: grid = [[0,0,0,0,0,0,0,0]]    Output: 0
+
+    def maxAreaOfIsland(self, grid):
+        if not grid:
+            return 0
+
+        maxArea = 0
+
+        def dfs(grid, i, j):
+            if i < 0 or j < 0 or i >= len(grid) or j >= len(grid[0]) or grid[i][j] != 1:
+                return 0
+
+            maxArea = 1
+            grid[i][j] = '#'  # this will act as visited set
+            maxArea += dfs(grid, i + 1, j)
+            maxArea += dfs(grid, i - 1, j)
+            maxArea += dfs(grid, i, j + 1)
+            maxArea += dfs(grid, i, j - 1)
+
+            return maxArea
+
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 1:
+                    maxArea = max(maxArea, dfs(grid, i, j))
+
+        return maxArea
+
+
+
+
+
 object = Solution()
 print(object.search([1,3,5,6],5))
 print(object.searchInsert([1,3,5,6],5))
 print(object.sortsq([-4,-1,0,3,10] ))
 print(object.rotate([1,2,3,4,5,6,7],3))
 print(object.moveZeroes([0,1,0,3,12]))
+#print(object.removeNthFromEnd([node1,node2,node3],2))
 print(object.reverseWords("Let's take LeetCode contest"))
 print(object.lengthOfLongestSubstring("pwwkew"))
 print(object.checkInclusion("ab","eidbaooo"))
+print(object.floodFill([[1,1,1],[1,1,0],[1,0,1]],1,1,2))
