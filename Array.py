@@ -287,12 +287,12 @@ class Solution:
         nums.sort()
         longest, cur_longest = 0, min(1, len(nums))
         for i in range(1,len(nums)):
-            if nums[i] == nums[i - 1] :
+            if nums[i] == nums[i - 1] : #如果前后index刚好都相等
                 continue
-            if nums[i] == nums[i - 1] + 1:
+            if nums[i] == nums[i - 1] + 1:      #目前的index item加1后刚刚好相等
                 cur_longest += 1
             else:
-                longest, cur_longest = max(longest, cur_longest), 1
+                longest, cur_longest = max(longest, cur_longest), 1  #输出目前最长的
         return max(longest, cur_longest)
 
     # 287. Find the Duplicate Number
@@ -373,6 +373,45 @@ class Solution:
         return maxSum
 
 
+    # 209. Minimum Size Subarray Sum
+    # Input: target = 7, nums = [2,3,1,2,4,3]     Output: 2
+    # Input: target = 4, nums = [1,4,4]      Output: 1
+    # Input: target = 11, nums = [1,1,1,1,1,1,1,1]   Output: 0
+
+    def minSubArrayLen(self, target, nums):
+        if len(nums) == 0: return 0
+        i, j = 0, 0
+        c, t = float("inf"), nums[0]
+        while j <= len(nums) - 1:
+            if t < target:      #如果比target小的话继续移动j的pointer往右边拓展
+                j += 1
+                if j <= len(nums) - 1: #小于最后的一个index
+                    t += nums[j]
+            elif t >= target:   #如果比target 等于或大的话移动i的pointer
+                c = min(j - i + 1, c)          #看最短的长度
+                t -= nums[i]
+                i += 1
+        return c if c != float("inf") else 0
+
+    # 238. Product of Array Except Self
+    # Input: nums = [1,2,3,4]    Output: [24,12,8,6]
+    # Input: nums = [-1,1,0,-3,3]    Output: [0,0,9,0,0]
+
+    def productExceptSelf(self, nums):
+        p = 1
+        n = len(nums)
+        output = []
+        for i in range(0, n):
+            output.append(p)
+            p = p * nums[i]
+        p = 1
+        for i in range(n - 1, -1, -1):
+            output[i] = output[i] * p
+            p = p * nums[i]
+        return output
+
+
+
 
 
 
@@ -399,3 +438,6 @@ print(object.longestConsecutive([100,4,200,1,3,2]))
 print(object.findDuplicate([1,1]))
 print(object.gameOfLife([[0,1,0],[0,0,1],[1,1,1],[0,0,0]]))
 print(object.maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))
+print(object.minSubArrayLen(7,[2,3,1,2,4,3]))
+print("aye")
+print(object.productExceptSelf([1,2,3,4]))

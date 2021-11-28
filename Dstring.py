@@ -165,7 +165,7 @@ class Solution:
                 pattern_dict[pattern[i]] = i
             if str_word[i] not in str_dict:
                 str_dict[str_word[i]] = i
-        for i in range(len(pattern)):
+        for i in range(len(pattern)):   #比较dictionary里的index是否是一样的
             if pattern_dict[pattern[i]] != str_dict[str_word[i]]:
                 return False
         return True
