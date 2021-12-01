@@ -235,6 +235,39 @@ class Solution:
                     nums[j], nums[j + 1] = nums[j + 1], nums[j]
         return str(int("".join(map(str, nums))))
 
+    # 316. Remove Duplicate Letters
+    # Input: s = "bcabc"     Output: "abc"
+    # Input: s = "cbacdcbc"    Output: "acdb"
+    # 不会
+
+
+    def removeDuplicateLetters(self, s):
+        stack = []
+        seen = set()
+        last_occurance = {}
+        for i in range(len(s)):
+            last_occurance[ s[i] ] = i
+
+        print(last_occurance)
+
+        for i, ch in enumerate(s):
+            if( ch in seen ):
+                continue
+            else:
+            # 3 temp1 = stack[-1]
+                while( stack and stack[-1] > ch and last_occurance[stack[-1]] > i ):
+                    print(stack[-1])
+                    print(last_occurance[stack[-1]])
+                    removed_char = stack.pop()
+                    seen.remove(removed_char)
+                seen.add(ch)
+                stack.append(ch)
+        # print(stack)
+        return ''.join(stack)
+
+
+
+
 
 
 
@@ -263,3 +296,4 @@ print(object.wordPattern("abba","dog cat cat dog"))
 print(object.isAnagram("rat","car"))
 print(object.groupAnagrams(["eat","tea","tan","ate","nat","bat"]))
 print(object.largestNumber([3,30,34,5,9]))
+print(object.removeDuplicateLetters("cbacdcbc"))
