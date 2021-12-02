@@ -307,6 +307,24 @@ class Solution:
         return summ
 
 
+    # 13. Roman to Integer
+    # Input: s = "III"    Output: 3
+    # Input: s = "IV"     Output: 4
+    # Input: s = "IX"     Output: 9
+    # Input: s = "LVIII"  Output: 58
+    def romanToInt(self, s):
+        res, prev = 0, 0
+        dict = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+        print(s[::-1])
+        for i in s[::-1]:  # rev the s
+            if dict[i] >= prev:
+                res += dict[i]  # sum the value iff previous value same or more
+            else:
+                res -= dict[i]  # substract when value is like "IV" --> 5-1, "IX" --> 10 -1 etc
+            prev = dict[i]
+        return res
+
+
 
 
 
@@ -340,3 +358,4 @@ print(object.largestNumber([3,30,34,5,9]))
 print(object.removeDuplicateLetters("cbacdcbc"))
 print(object.convertToTitle(28))
 print(object.convertToTitle2("AB"))
+print(object.romanToInt("IX"))
