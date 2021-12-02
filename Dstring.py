@@ -251,19 +251,60 @@ class Solution:
         print(last_occurance)
 
         for i, ch in enumerate(s):
+            print(i)
+            print(ch)
             if( ch in seen ):
                 continue
             else:
             # 3 temp1 = stack[-1]
                 while( stack and stack[-1] > ch and last_occurance[stack[-1]] > i ):
-                    print(stack[-1])
-                    print(last_occurance[stack[-1]])
+                    a=stack[-1]
+                    b=last_occurance[stack[-1]]
                     removed_char = stack.pop()
                     seen.remove(removed_char)
                 seen.add(ch)
                 stack.append(ch)
         # print(stack)
         return ''.join(stack)
+
+
+    # 168. Excel Sheet Column Title
+    # Input: columnNumber = 1     Output: "A"
+    # Input: columnNumber = 28    Output: "AB"
+    # Input: columnNumber = 701   Output: "ZY"
+
+    # A   1     AA    26+ 1     BA  2×26+ 1     ...     ZA  26×26+ 1     AAA  1×26²+1×26+ 1
+    # B   2     AB    26+ 2     BB  2×26+ 2     ...     ZB  26×26+ 2     AAB  1×26²+1×26+ 2
+    # .   .     ..    .....     ..  .......     ...     ..  ........     ...  .............
+    # .   .     ..    .....     ..  .......     ...     ..  ........     ...  .............
+    # .   .     ..    .....     ..  .......     ...     ..  ........     ...  .............
+    # Z  26     AZ    26+26     BZ  2×26+26     ...     ZZ  26×26+26     AAZ  1×26²+1×26+26
+
+
+    def convertToTitle(self, num):
+        capitals = [chr(x) for x in range(ord('A'), ord('Z') + 1)]   #创建A-Z的数组
+        result = []
+        print(capitals)
+        while num > 0:
+            result.append(capitals[(num - 1) % 26])
+            num = (num - 1) // 26
+        result.reverse()
+        return ''.join(result)
+
+
+
+    # 171. Excel Sheet Column Number
+    # Input: columnTitle = "A"    Output: 1
+    # Input: columnTitle = "AB"   Output: 28
+    # Input: columnTitle = "ZY"   Output: 701
+    def convertToTitle2(self,s):
+        p = 1
+        summ = 0
+        for i in s[::-1]:
+            summ += p * (ord(i) - 64)  # -ord(A)+1
+            p *= 26
+
+        return summ
 
 
 
@@ -297,3 +338,5 @@ print(object.isAnagram("rat","car"))
 print(object.groupAnagrams(["eat","tea","tan","ate","nat","bat"]))
 print(object.largestNumber([3,30,34,5,9]))
 print(object.removeDuplicateLetters("cbacdcbc"))
+print(object.convertToTitle(28))
+print(object.convertToTitle2("AB"))
