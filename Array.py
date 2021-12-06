@@ -411,6 +411,26 @@ class Solution:
         return output
 
 
+    # 152. Maximum Product Subarray
+    # Input: nums = [2,3,-2,4]     Output: 6
+    # Input: nums = [-2,0,-1]      Output: 0
+
+    # 1. Edge Case : Negative * Negative = Positive
+    # 2. So we need to keep track of minimum values also, as they can yield maximum values.
+
+    def maxProduct(self, nums): #因为有负负得正情况所以需要curr_min记录
+        global_max = prev_max = prev_min = nums[0]
+        for num in nums[1:]:   #curr_max 记录循环到的地方的时候的最大值
+            curr_min = min(prev_max * num, prev_min * num, num)
+            curr_max = max(prev_max * num, prev_min * num, num)
+            global_max = max(global_max, curr_max)
+            prev_max = curr_max
+            prev_min = curr_min
+        return global_max
+
+
+
+
 
 
 
@@ -441,3 +461,4 @@ print(object.maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))
 print(object.minSubArrayLen(7,[2,3,1,2,4,3]))
 print("aye")
 print(object.productExceptSelf([1,2,3,4]))
+print(object.maxProduct([-2,0,-1]))
