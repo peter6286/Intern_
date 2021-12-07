@@ -301,7 +301,8 @@ class Solution:
         p = 1
         summ = 0
         for i in s[::-1]:
-            summ += p * (ord(i) - 64)  # -ord(A)+1
+            #print(ord(i))
+            summ += p * (ord(i) - 64)  # -ord(A)+1 像十进制一样进位
             p *= 26
 
         return summ
@@ -315,7 +316,7 @@ class Solution:
     def romanToInt(self, s):
         res, prev = 0, 0
         dict = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
-        print(s[::-1])
+        print(s[::-1])          #大的应该在前面
         for i in s[::-1]:  # rev the s
             if dict[i] >= prev:
                 res += dict[i]  # sum the value iff previous value same or more
@@ -323,6 +324,49 @@ class Solution:
                 res -= dict[i]  # substract when value is like "IV" --> 5-1, "IX" --> 10 -1 etc
             prev = dict[i]
         return res
+
+
+    #12. Integer to Roman
+    # Input: num = 3    Output: "III"
+    # Input: num = 4    Output: "IV"
+    # Input: num = 9    Output: "IX"
+    # Input: num = 58   Output: "LVIII"
+
+    def intToRoman(self, num):
+        values = [ 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 ]
+        numerals = [ "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" ]
+        res = ""
+        for i, v in enumerate(values):
+            res += (num//v) * numerals[i] #除后不是小数才可以继续除进入输出
+            num %= v  #比大的数除还是自己本身
+        return res
+
+
+
+
+    #3. Longest Substring Without Repeating Characters
+    # Input: s = "abcabcbb"   Output: 3
+    # Input: s = "bbbbb"     Output: 1
+    # Input: s = "pwwkew"   Output: 3
+
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int abcabcbb
+        """
+        seen = {}
+        l = 0
+        output = 0
+        for r in range(len(s)):
+            if s[r] not in seen:    # If s[r] not in seen, we can keep increasing the window size by moving right pointer
+                output = max(output,r-l+1)
+            else:   # There are two cases if s[r] in seen
+                if seen[s[r]] < l: # s[r] is not inside the current window, we can keep increase the window
+                    output = max(output,r-l+1)
+                else:   #s[r] is inside the current window, we need to change the window by moving left pointer to seen[s[r]] + 1
+                    l = seen[s[r]] + 1
+            seen[s[r]] = r
+        return output
 
 
 
@@ -359,3 +403,5 @@ print(object.removeDuplicateLetters("cbacdcbc"))
 print(object.convertToTitle(28))
 print(object.convertToTitle2("AB"))
 print(object.romanToInt("IX"))
+print(object.intToRoman(58))
+print(object.lengthOfLongestSubstring("abcabcbb"))

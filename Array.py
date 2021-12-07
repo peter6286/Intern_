@@ -429,6 +429,76 @@ class Solution:
         return global_max
 
 
+    #228. Summary Ranges
+    # Input: nums = [0,1,2,4,5,7]      Output: ["0->2","4->5","7"]
+    # Input: nums = [0,2,3,4,6,8,9]    Output: ["0","2->4","6","8->9"]
+    # Input: nums = []                 Output: []
+    # Input: nums = [-1]               Output: ["-1"]
+
+
+    def summaryRanges(self,nums):
+        if len(nums) == 0: return []
+        if len(nums) == 1: return [str(nums[0])]
+        res = []
+        curr=[]
+        curr.append(nums[0])
+        for i in range(1, len(nums)):
+            if nums[i] - curr[-1] == 1:   #刚好和前面的差1
+                curr.append(nums[i])
+            else:   #如果不是差1的时候
+                if len(curr) > 1:   #将目前已经形成range的curr先输出进result
+                    res.append(str(curr[0]) + '->' + str(curr[-1]))
+                    curr = []  #清空后最新的将单个放入
+                    curr.append(nums[i])
+                else:
+                    res.append(str(curr[-1]))#将单个element放入result
+                    curr = []
+                    curr.append(nums[i])
+            if i == len(nums) - 1 and len(curr) == 1: #将剩下的单个元素的放入
+                res.append(str(nums[-1]))
+            if i == len(nums) - 1 and len(curr) > 1: #将range放入
+                res.append(str(curr[0]) + '->' + str(curr[-1]))
+        return res
+
+
+    # 88. Merge Sorted Array
+    def merge(self, nums1, m, nums2, n):
+        while m > 0 and n > 0:   #使用merger sort
+            if nums1[m-1] > nums2[n-1]:  #更新后的长度是m+n，所以更新的index从nums1[m+n-1]开始
+                nums1[m+n-1] = nums1[m-1] #从大到小开始sort
+                m -= 1
+            else:
+                nums1[m+n-1] = nums2[n-1]
+                n -= 1
+        while n > 0:        #检查有没有漏的
+            nums1[n-1] = nums2[n-1]
+            n -= 1
+
+    # 75. Sort Colors
+    # Input: nums = [2,0,2,1,1,0]     Output: [0,0,1,1,2,2]
+    # Input: nums = [2,0,1]           Output: [0,1,2]
+    # Input: nums = [0]               Output: [0]
+
+    def sortColors(self, nums):
+        red, white, blue = 0, 0, len(nums)-1
+
+        while white <= blue:   #用white做pointer
+            if nums[white] == 0:
+                nums[red], nums[white] = nums[white], nums[red]  #红色和白色跟随着加上去，互相更换位置
+                white += 1
+                red += 1
+            elif nums[white] == 1:
+                white += 1
+            else:
+                nums[white], nums[blue] = nums[blue], nums[white] #如果是蓝色的话换位置，讲蓝色换到最后然后减1
+                blue -= 1
+
+        return nums
+
+
+
+
+
 
 
 
@@ -462,3 +532,5 @@ print(object.minSubArrayLen(7,[2,3,1,2,4,3]))
 print("aye")
 print(object.productExceptSelf([1,2,3,4]))
 print(object.maxProduct([-2,0,-1]))
+print(object.summaryRanges([0,2,3,4,6,8,9]))
+print(object.sortColors([0,1,2]))
