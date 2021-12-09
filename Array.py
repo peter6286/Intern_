@@ -496,7 +496,7 @@ class Solution:
         return nums
 
 
-    #
+
 
     def moveZeroes(self, nums):
         l, r = 0, 0
@@ -511,6 +511,17 @@ class Solution:
             else:
                 l += 1
                 r += 1
+
+
+
+    def wiggleSort(self, nums):
+        nums.sort()
+        half = len(nums[::2])       #nums[1::2] 奇数位的index
+        print(nums[::2])            #nums[::2] 偶数位的index
+        nums[::2], nums[1::2] = nums[:half][::-1], nums[half:][::-1]  #nums里的偶数index放排序后中间较小的index
+        return  nums                                                  #nums里的奇数index放排序后中间较大的index
+
+
 
 
 
@@ -551,3 +562,4 @@ print(object.productExceptSelf([1,2,3,4]))
 print(object.maxProduct([-2,0,-1]))
 print(object.summaryRanges([0,2,3,4,6,8,9]))
 print(object.sortColors([0,1,2]))
+print(object.wiggleSort([1,5,1,1,6,4]))

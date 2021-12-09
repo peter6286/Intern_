@@ -392,7 +392,7 @@ class Solution:
     # Input: s = "race a car"          Output: false
     # Input: s = " "                   Output: true
 
-    def isPalindrome(self, s):
+    def isPalindrome1(self, s):
         l, r = 0, len(s) - 1
         while l < r:
             if not s[l].isalnum(): #如果left不是一个alphabet
@@ -460,6 +460,51 @@ class Solution:
     # 不会
 
 
+    #9. Palindrome Number
+    # Input: x = 121     Output: true
+    # Input: x = -121    Output: false
+    # Input: x = 10      Output: false
+    # Input: x = -101    Output: false
+    def isPalindrome(self, x):
+        num=str(x)
+        left=0
+        right=len(num)-1
+        while left < right:
+            if num[left]==num[right]:
+                left+=1
+                right-=1
+            else:
+                return False
+        return True
+
+    #131. Palindrome Partitioning
+    # Input: s = "aab"        Output: [["a","a","b"],["aa","b"]]
+    # Input: s = "a"          Output: [["a"]]
+
+    def partition(self, s):
+        def dfs(s, path , res):
+            if not s:
+                res.append(path)
+            for i in range(1, len(s)+1):
+                if self.isPalindrome(s[:i]):
+                    dfs(s[i:], path+[s[:i]], res)
+        res = []
+        dfs(s, [], res)
+        return res
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -493,6 +538,8 @@ print(object.convertToTitle2("AB"))
 print(object.romanToInt("IX"))
 print(object.intToRoman(58))
 print(object.lengthOfLongestSubstring("abcabcbb"))
+print(object.isPalindrome(1001))
+print(object.partition("aab"))
 print(object.longestSubstring("ababbc",2))
 print(object.longestPalindrome("baabd"))
 print(object.moveZeroes([0,1,0,3,12]))
