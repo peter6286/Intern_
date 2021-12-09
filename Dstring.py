@@ -1,3 +1,4 @@
+import collections
 class Solution:
     #Implement strStr()
     # Input: haystack = "hello", needle = "ll"  Output: 2
@@ -369,7 +370,94 @@ class Solution:
         return output
 
 
+    # 395. Longest Substring with At Least K Repeating Characters
+    # Input: s = "aaabb", k = 3      Output: 3
+    # Input: s = "ababbc", k = 2     Output: 5
 
+    def longestSubstring(self, s, k):
+        cnt = collections.Counter(s)    #给s里的字母制作dictionary
+        print(cnt)
+        st = 0  #substring开始的点
+        maxst = 0
+        for i, c in enumerate(s):
+            if cnt[c] < k:  #如果字母少于k的话输出目前长度比较
+                maxst = max(maxst, self.longestSubstring(s[st:i], k))
+                st = i + 1  #将开始点移到目前的点上
+        return len(s) if st == 0 else max(maxst, self.longestSubstring(s[st:], k))
+
+
+
+    # 125. Valid Palindrome
+    # Input: s = "A man, a plan, a canal: Panama"     Output: true
+    # Input: s = "race a car"          Output: false
+    # Input: s = " "                   Output: true
+
+    def isPalindrome(self, s):
+        l, r = 0, len(s) - 1
+        while l < r:
+            if not s[l].isalnum(): #如果left不是一个alphabet
+                l += 1
+            elif not s[r].isalnum(): #如果right不是一个alphabet
+                r -= 1
+            else:
+                if s[l].lower() != s[r].lower():  #如果左右两边的alphabet相同
+                    return False
+                else:
+                    l += 1
+                    r -= 1
+        return True
+
+    def longestPalindrome(self, s):
+        n = len(s)
+        # Form a bottom-up dp 2d array
+        # dp[i][j] will be 'true' if the string from index i to j is a palindrome.
+        dp = [[False] * n for _ in range(n)]  #制作全是false的table，会是true如果是palindrome
+
+        ans = ''
+        # every string with one character is a palindrome
+        for i in range(n):    #字母本身是一个substring所以可以设置为 ture
+            dp[i][i] = True
+            ans = s[i]
+
+        maxLen = 1
+        for start in range(n - 1, -1, -1):
+            for end in range(start + 1, n):
+                # palindrome condition
+                if s[start] == s[end]:  #如果头和尾巴是相同的
+                    # if it's a two char. string or if the remaining string is a palindrome too
+                    if end - start == 1 or dp[start + 1][end - 1]: #头和尾巴中间刚好是差1个字母或者是true
+                        dp[start][end] = True
+                        if maxLen < end - start + 1:
+                            maxLen = end - start + 1
+                            ans = s[start: end + 1]
+
+        return ans
+
+
+
+    # 283. Move Zeroes
+    # Input: nums = [0,1,0,3,12]      Output: [1,3,12,0,0]
+    # Input: nums = [0]               Output: [0]
+
+    def moveZeroes(self, nums):
+        l, r = 0, 0             #left找有0的index，right找替换点
+        while r < len(nums):
+            if nums[l] == 0:
+                if nums[r] != 0:       #当不等于0时找到替换点换位
+                    nums[l], nums[r] = nums[r], nums[l]
+                    l += 1
+                    r += 1
+                else:
+                    r += 1      #当right等于0的时候跳过
+            else:
+                l += 1    #left不等于0的时候
+                r += 1
+        return nums
+
+
+
+    #376. Wiggle Subsequence
+    # 不会
 
 
 
@@ -405,3 +493,6 @@ print(object.convertToTitle2("AB"))
 print(object.romanToInt("IX"))
 print(object.intToRoman(58))
 print(object.lengthOfLongestSubstring("abcabcbb"))
+print(object.longestSubstring("ababbc",2))
+print(object.longestPalindrome("baabd"))
+print(object.moveZeroes([0,1,0,3,12]))
