@@ -407,6 +407,13 @@ class Solution:
                     r -= 1
         return True
 
+
+    # 5. Longest Palindromic Substring
+    # Input: s = "babad"     Output: "bab"
+    # Input: s = "cbbd"      Output: "bb"
+    # Input: s = "a"         Output: "a"
+    # Input: s = "ac"        Output: "a"
+
     def longestPalindrome(self, s):
         n = len(s)
         # Form a bottom-up dp 2d array
@@ -491,25 +498,6 @@ class Solution:
         res = []
         dfs(s, [], res)
         return res
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

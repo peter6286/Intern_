@@ -496,8 +496,9 @@ class Solution:
         return nums
 
 
-
-
+    #283. Move Zeroes
+    # Input: nums = [0,1,0,3,12]    Output: [1,3,12,0,0]
+    # Input: nums = [0]             Output: [0]
     def moveZeroes(self, nums):
         l, r = 0, 0
         while r < len(nums):
@@ -513,13 +514,15 @@ class Solution:
                 r += 1
 
 
-
+    # 324. Wiggle Sort II
+    # Input: nums = [1,5,1,1,6,4]     Output: [1,6,1,5,1,4]
+    # Input: nums = [1,3,2,2,3,1]     Output: [2,3,1,3,1,2]
     def wiggleSort(self, nums):
         nums.sort()
         half = len(nums[::2])       #nums[1::2] 奇数位的index
         print(nums[::2])            #nums[::2] 偶数位的index
         nums[::2], nums[1::2] = nums[:half][::-1], nums[half:][::-1]  #nums里的偶数index放排序后中间较小的index
-        return  nums                                                  #nums里的奇数index放排序后中间较大的index
+        return nums                                                  #nums里的奇数index放排序后中间较大的index
 
 
 
