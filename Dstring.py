@@ -582,6 +582,7 @@ class Solution:
 
 
 
+
 object=Solution()
 strs = ["flower","flow","flight"]
 print(object.strStr("hello","ll"))
@@ -609,5 +610,6 @@ print(object.partition("aab"))
 print(object.longestSubstring("ababbc",2))
 print(object.longestPalindrome("baabd"))
 print(object.moveZeroes([0,1,0,3,12]))
+print(object.isValid("()[]{}"))
 print(object.generateParenthesis(3))
 print(object.diffWaysToCompute("2-1-1"))
