@@ -500,6 +500,84 @@ class Solution:
         return res
 
 
+    # 20. Valid Parentheses
+    # Input: s = "()"       Output: true
+    # Input: s = "()[]{}"   Output: true
+    # Input: s = "(]"       Output: false
+    # Input: s = "([)]"     Output: false
+    # Input: s = "{[]}"     Output: true
+
+    def isValid(self, s):
+        d = {"(": ")", "[": "]", "{": "}"}   #制作dictionary map对应的的符号
+        stack = []
+        for i in s:
+            if i in d:
+                stack.append(i)
+            elif len(stack) == 0 or d[stack.pop()] != i:    #如果stack里面没有东西或者map的东西不对
+                return False
+        return len(stack) == 0
+
+    # 22. Generate Parentheses
+    # Input: n = 3
+    # Output: ["((()))","(()())","(())()","()(())","()()()"]
+    # Input: n = 1
+    # Output: ["()"]
+
+
+    # only add open paranthesis if open < n
+    # only add a closing paranthesis if closed < open
+    # valid iff open == closed == n
+
+    def generateParenthesis(self, n):
+        res=[]
+        stack=[]
+        def dfs(openn,closen):
+            if openn==closen==n:
+                res.append("".join(stack))
+                return
+            if openn < n:
+                stack.append("(")
+                dfs(openn+1,closen)
+                stack.pop()
+            if openn > closen:
+                stack.append(")")
+                dfs(openn,closen+1)
+                stack.pop()
+        dfs(0,0)
+        return res
+
+
+    # 241. Different Ways to Add Parentheses
+    # Input: expression = "2-1-1"     Output: [0,2]
+    # Input: expression = "2*3-4*5"   Output: [-34,-14,-10,-10,10]
+
+    def diffWaysToCompute(self, expression):
+        def dp(s):
+            res = []
+            for i in range(len(s)):
+                if '+' not in s and '-' not in s and '*' not in s:
+                    return [int(s)]
+                if s[i] in ('+', '-', '*'):     #查看是否在里面
+                    L1 = dp(s[:i])
+                    L2 = dp(s[i + 1:])
+                    if s[i] == '+':         #把左边右边相加相减后的值加起来
+                        for x in L1:
+                            for y in L2:
+                                res.append(x + y)
+                    elif s[i] == '-':
+                        for x in L1:
+                            for y in L2:
+                                res.append(x - y)
+                    else:
+                        for x in L1:
+                            for y in L2:
+                                res.append(x * y)
+            return res
+        return dp(expression)
+
+
+
+
 
 
 
@@ -531,3 +609,5 @@ print(object.partition("aab"))
 print(object.longestSubstring("ababbc",2))
 print(object.longestPalindrome("baabd"))
 print(object.moveZeroes([0,1,0,3,12]))
+print(object.generateParenthesis(3))
+print(object.diffWaysToCompute("2-1-1"))
