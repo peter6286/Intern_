@@ -61,13 +61,17 @@ class Solution:
     # 前序遍历：根结点、左子树、右子树
 
     def preorderTraversal( self,root):
-        stack, res = [root], []
+        stack = [root]
+        res = []
         while stack:
-            node = stack.pop()
-            if node:
-                res.append(node.val)
-                stack.append(node.right)
-                stack.append(node.left)
+            temp = stack.pop()
+            if temp:
+                if isinstance(temp, Node):
+                    stack.append(temp.right)
+                    stack.append(temp.left)
+                    stack.append(temp.val)
+                else:
+                    res.append(temp)
         return res
 
 
@@ -79,32 +83,38 @@ class Solution:
     # 中序遍历：左子树、根结点、右子树
 
     def inorderTraversal(self, root):
-        res, stack = [], []
-        while True:
-            while root:
-                stack.append(root)
-                root = root.left
-            if not stack:
-                return res
-            node = stack.pop()
-            res.append(node.val)
-            root = node.right
+        stack = [root]
+        res = []
+        while stack:
+            temp = stack.pop()
+            if temp:
+                if isinstance(temp, Node):
+                    stack.append(temp.right)
+                    stack.append(temp.val)
+                    stack.append(temp.left)
+                else:
+                    res.append(temp)
         return res
 
 
-
+    # 145. Binary Tree Postorder Traversal
+    # Input: root = [1,null,2,3]
+    # Output: [3,2,1]
+    # Input: root = [1]
+    # Output: [1]
     # 后序遍历：左子树、右子树、根结点
     def postorderTraversal(self, root):
-        res, stack = [], []
-        while True:
-            while root:
-                stack.append(root)
-                root = root.left
-            if not stack:
-                return res
-            node = stack.pop()
-            res.append(node.val)
-            root = node.right
+        stack = [root]
+        res = []
+        while stack:
+            temp = stack.pop()
+            if temp:
+                if isinstance(temp, Node):
+                    stack.append(temp.val)
+                    stack.append(temp.right)
+                    stack.append(temp.left)
+                else:
+                    res.append(temp)
         return res
 
 
