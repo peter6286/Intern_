@@ -118,11 +118,58 @@ class Solution:
         return res
 
 
+    # 102. Binary Tree Level Order Traversal
+    # Input: root = [3,9,20,null,null,15,7]
+    # Output: [[3],[9,20],[15,7]]
+    # Input: root = [1]
+    # Output: [[1]]
+
+    def levelOrder(self, root):
+        res = []  # Ans array
+        if not root:
+            return res
+        q = []  # Queue for BFS
+        q.append(root)
+        while q:
+            size = len(q)  # Get number of elements on level
+            tmp = []  # Hold level temporarily
+            for i in range(0, size):  # Empty entire level
+                node = q.pop(0)
+                tmp.append(node.val)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            res.append(tmp)  # Dump level to res, we will now move onto the next level.
+        return res
+
+
+
+    # 100. Same Tree
+    # Input: p = [1,2,3], q = [1,2,3]
+    # Output: true
+    # Input: p = [1,2], q = [1,null,2]
+    # Output: false
+    # Input: p = [1,2,1], q = [1,1,2]
+    # Output: false
+
+    def isSameTree(self, p, q):
+        if q is None and p is None:
+            return True
+        elif q is None or p is None:
+            return False
+        if p.val == q.val:
+            return self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
+
+
+
+
+
 
 
 object=Solution()
 null = None
-vals = [1,null,2,3]
+vals = [3,9,20,null,null,15,7]
 tree = generate_tree(vals)
 print('中序遍历:')
 dfs(tree) # 9 3 15 20 7
@@ -132,3 +179,5 @@ print("\n")
 print(object.preorderTraversal(tree))
 print(object.inorderTraversal(tree))
 print(object.postorderTraversal(tree))
+print(object.levelOrder(tree))
+print(object.isSameTree([1,2],[1,null,2]))

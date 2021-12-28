@@ -93,6 +93,38 @@ class Solution:
         backtrack([],0,target)
         return res
 
+    # 216. Combination Sum III
+    # Input: k = 3, n = 7
+    # Output: [[1,2,4]]
+    # Input: k = 3, n = 9
+    # Output: [[1,2,6],[1,3,5],[2,3,4]]
+
+    def combinationSum3(self, k, n):
+        res = []
+
+        def backtrack(num, stack, target):
+            if len(stack) == k:
+                if target == 0:
+                    res.append(stack)
+                return
+
+            for x in range(num + 1, 10):        # 1-10 的数相加
+                if x <= target:
+                    backtrack(x, stack + [x], target - x)      #减去目前的大小达到base case
+
+        backtrack(0, [], n)
+
+    def combinationSum4(self, nums, target):
+        dp = [0] * (target + 1)
+        dp[0] = 1
+        for i in range(1, target + 1):  # 从1一直到target填充
+            for j in nums:      #遍历nums中的每一个元素
+                if i - j >= 0:  #判断前一个有多少种解法
+                    dp[i] += dp[i - j]  #填充进去
+        return dp[target]
+
+
+
 
 
 object=Solution()
@@ -100,3 +132,5 @@ print(object.subsets([1,2,3]))
 print(object.subsetsWithDup([1,2,2]))
 print(object.combinationSum([2,3,6,7],7))
 print(object.combinationSum2([10,1,2,7,6,1,5],8))
+print(object.combinationSum4([1,2,3],4))
+
