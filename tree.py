@@ -170,7 +170,11 @@ class Solution:
 object=Solution()
 null = None
 vals = [3,9,20,null,null,15,7]
+val2 = [1,2]
+val3 = [1,null,2]
 tree = generate_tree(vals)
+tree2 = generate_tree(val2)
+tree3 = generate_tree(val3)
 print('中序遍历:')
 dfs(tree) # 9 3 15 20 7
 print('\n层序遍历:')
@@ -180,4 +184,4 @@ print(object.preorderTraversal(tree))
 print(object.inorderTraversal(tree))
 print(object.postorderTraversal(tree))
 print(object.levelOrder(tree))
-print(object.isSameTree([1,2],[1,null,2]))
+print(object.isSameTree(tree2,tree3))
