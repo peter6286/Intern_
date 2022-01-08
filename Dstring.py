@@ -532,14 +532,14 @@ class Solution:
         res=[]
         stack=[]
         def dfs(openn,closen):
-            if openn==closen==n:
+            if openn==closen==n:#base case
                 res.append("".join(stack))
                 return
-            if openn < n:
+            if openn < n:           #当open的达到了n的时候会跳到close的if指令去执行
                 stack.append("(")
                 dfs(openn+1,closen)
                 stack.pop()
-            if openn > closen:
+            if openn > closen:  #open 一定要是大于close的得有前括号才有后括号
                 stack.append(")")
                 dfs(openn,closen+1)
                 stack.pop()

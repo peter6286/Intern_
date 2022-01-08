@@ -462,6 +462,10 @@ class Solution:
 
 
     # 88. Merge Sorted Array
+    # nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+    # [1,2,2,3,5,6]
+    #  nums1 = [1], m = 1, nums2 = [], n = 0
+    # [1]
     def merge(self, nums1, m, nums2, n):
         while m > 0 and n > 0:   #使用merger sort
             if nums1[m-1] > nums2[n-1]:  #更新后的长度是m+n，所以更新的index从nums1[m+n-1]开始
@@ -475,6 +479,7 @@ class Solution:
             n -= 1
 
     # 75. Sort Colors
+    # We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
     # Input: nums = [2,0,2,1,1,0]     Output: [0,0,1,1,2,2]
     # Input: nums = [2,0,1]           Output: [0,1,2]
     # Input: nums = [0]               Output: [0]
@@ -515,6 +520,7 @@ class Solution:
 
 
     # 324. Wiggle Sort II
+    # Given an integer array nums, reorder it such that nums[0] < nums[1] > nums[2] < nums[3]
     # Input: nums = [1,5,1,1,6,4]     Output: [1,6,1,5,1,4]
     # Input: nums = [1,3,2,2,3,1]     Output: [2,3,1,3,1,2]
     def wiggleSort(self, nums):
