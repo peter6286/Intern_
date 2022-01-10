@@ -275,6 +275,27 @@ class Solution:
         backtrack(0,0,"")
         return res
 
+    # 216. Combination Sum III
+    # Input: k = 3, n = 7
+    # Output: [[1,2,4]]
+    # Input: k = 3, n = 9
+    # Output: [[1,2,6],[1,3,5],[2,3,4]]
+
+    def combinationSum3(self, k, n):
+        res = []
+        def backtrack(num,stack,target):
+            if len(stack)==k:
+                if target ==0 :
+                    res.append(stack)
+                return
+
+            for x in range (num+1,10):
+                if x <= target:
+                    backtrack(x,stack+[x],target-x)
+
+        backtrack(0,[],n)
+        return res
+
 
 
 

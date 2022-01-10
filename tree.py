@@ -643,14 +643,58 @@ class Solution:
             root = root.right       #如果不成立再往右树上找然后循环
 
 
+    # 99. Recover Binary Search Tree
+    # Input: root = [1,3,null,null,2]
+    # Output: [3,1,null,null,2]
+    # Explanation: 3 cannot be a left child of 1 because 3 > 1.
+    # Swapping 1 and 3 makes the BST valid.
+    # Input: root = [3,1,4,null,null,2]
+    # Output: [2,1,4,null,null,3]
+    # Explanation: 2 cannot be in the right subtree of 3 because 2 < 3.
+    # Swapping 2 and 3 makes the BST valid.
+
+    def recoverTree(self, root):
+        stack = []
+        replace = []
+        perv = Node(float("-inf"))
+        curr = root
+        while curr or stack:
+            while curr:             # inorder traversal
+                stack.append(curr)
+                curr = curr.left
+            temp = stack.pop()
+            if temp.val < perv.val:     # 在inorder 里当前的value一定是要比perv的大所以进入replace
+                replace.append((perv,temp)) # 【(3,2),(2,1)] 所以第一个要和最后一个node换
+
+            perv = temp
+            curr = temp.right
+
+            replace[0][0].val, replace[-1][1].val = replace[-1][1].val, replace[0][0].val
+
+    # 114. Flatten Binary Tree to Linked List
+    # Input: root = [1,2,5,3,4,null,6]
+    # Output: [1,null,2,null,3,null,4,null,5,null,6]
+    # Input: root = []
+    # Output: []
+    # Input: root = [0]
+    # Output: [0]
 
 
+    def flatten(self, root):
+        def dfs(root):
+            if not root:
+                return None
 
+            Lefttail = dfs(root.left)
+            Righttail = dfs(root.right)
 
-
-
-
-
+            if root.left:
+                Lefttail.right = root.right
+                root.right = root.left
+                root.left = None
+            last =  Righttail or Lefttail or root
+            return last
+        dfs(root)
 
 
 
@@ -690,6 +734,8 @@ tree103 = generate_tree([3,9,20,null,null,15,7])
 tree199 = generate_tree([1,3])
 tree98 = generate_tree([5])
 tree235 = generate_tree([6,2,8,0,4,7,9,null,null,3,5])
+# tree99 = generate_tree([1,3,null,null,2])
+tree114 = generate_tree([1,2,5,3,4,null,6])
 
 print('中序遍历:')
 dfs(tree) # 9 3 15 20 7
@@ -716,5 +762,7 @@ print(object.zigzagLevelOrder(tree107))
 print(object.rightSideView(tree199))
 print(object.isValidBST(tree98))
 # print(object.lowestCommonAncestor(tree235,2,8))
+print(object.flatten(tree114))
+
 
 

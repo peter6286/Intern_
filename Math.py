@@ -19,3 +19,4 @@ class Solution:
 
 object=Solution()
 print(object.plusOne([4,3,2,1]))
+pri
