@@ -688,13 +688,72 @@ class Solution:
             Lefttail = dfs(root.left)
             Righttail = dfs(root.right)
 
-            if root.left:
-                Lefttail.right = root.right
-                root.right = root.left
+            if root.left: #如果有左树的时候
+                Lefttail.right = root.right     #将左树的尾巴和右树的头给连上
+                root.right = root.left          # 右树的头和左树连接上
                 root.left = None
-            last =  Righttail or Lefttail or root
+            last = Righttail or Lefttail or root #因为所有都在右树上先返回右树再or其他的点
             return last
         dfs(root)
+
+
+    # 222. Count Complete Tree Nodes
+    # Input: root = [1,2,3,4,5,6]
+    # Output: 6
+    # Input: root = []
+    # Output: 0
+    # Input: root = [1]
+    # Output: 1
+    def countNodes(self, root):
+        def getdepth(root):
+           if not root:
+               return 0
+           return 1+getdepth(root.left)   #因为是从左到右的顺序所以getdepth也是找最后一个左树
+        if not root:
+            return 0
+        leftdepth = getdepth(root.left)     #找深度
+        rightdepth = getdepth(root.right)
+        if leftdepth == rightdepth:
+            return pow(2,leftdepth)+self.countNodes(root.right)  # the left sub tree is a full binary tree
+        else:
+            return pow(2,rightdepth)+self.countNodes(root.left) # the right sub tree is a full binary tree
+
+
+    # 105. Construct Binary Tree from Preorder and Inorder Traversal
+    # Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+    # Output: [3,9,20,null,null,15,7]
+    # Input: preorder = [-1], inorder = [-1]
+    # Output: [-1]
+
+
+    def buildTree(self, preorder, inorder):
+        if not preorder or not inorder:
+            return None
+        root = Node(preorder[0])
+        mid = inorder.index([preorder[0]])
+        root.left = self.buildTree(preorder[1:mid+1],inorder[:mid])
+        root.right = self.buildTree(preorder[mid+1:],inorder[mid+1:])
+        return root
+
+    def connect(self, root):
+        if not root:
+            return root
+        q = []
+        q.append(root)
+        while q :
+            curr = q.pop(0)
+            if curr.left and curr.right:
+                curr.left.next = curr.right
+                if curr.next:
+                    curr.right.next = curr.next.left
+                q.append(curr.left)
+                q.append(curr.right)
+
+        return root
+
+
+
+
 
 
 
@@ -736,6 +795,7 @@ tree98 = generate_tree([5])
 tree235 = generate_tree([6,2,8,0,4,7,9,null,null,3,5])
 # tree99 = generate_tree([1,3,null,null,2])
 tree114 = generate_tree([1,2,5,3,4,null,6])
+tree222 = generate_tree([[1,2,3,4,5,6]])
 
 print('中序遍历:')
 dfs(tree) # 9 3 15 20 7
@@ -763,6 +823,7 @@ print(object.rightSideView(tree199))
 print(object.isValidBST(tree98))
 # print(object.lowestCommonAncestor(tree235,2,8))
 print(object.flatten(tree114))
+print(object.countNodes(tree222))
 
 
 
