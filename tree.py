@@ -735,21 +735,147 @@ class Solution:
         root.right = self.buildTree(preorder[mid+1:],inorder[mid+1:])
         return root
 
-    def connect(self, root):
+
+    # 116. Populating Next Right Pointers in Each Node
+    # Populate each next pointer to point to its next right node.
+    # If there is no next right node,the next pointer should be set to NULL.
+    # Input: root = [1,2,3,4,5,6,7]
+    # Output: [1,#,2,3,#,4,5,6,7,#]
+
+    def connect(self, root):                  # bfs queue
         if not root:
             return root
         q = []
         q.append(root)
         while q :
             curr = q.pop(0)
-            if curr.left and curr.right:
+            if curr.left and curr.right:  #将current的左右子树连接上
                 curr.left.next = curr.right
-                if curr.next:
-                    curr.right.next = curr.next.left
+                if curr.next:       #如果current有next代表同一层有边还有一个node将他们连接上
+                    curr.right.next = curr.next.left    #curr的右子树连接上curr同一层右边的node的左子树
                 q.append(curr.left)
                 q.append(curr.right)
 
         return root
+
+
+    # 117. Populating Next Right Pointers in Each Node II
+    # Input: root = [1,2,3,4,5,null,7]
+    # Output: [1,#,2,3,#,4,5,7,#]
+    #  https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/
+
+    def connect2(self, root):
+        if not root:
+            return root
+        q = []
+        q.append(root)
+        tail = root
+        while q:
+            curr = q.pop()
+            if curr.left:
+                q.append(curr.left)
+            if curr.right:
+                q.append(curr.right)
+            if curr == tail:            #检查是不是在这一层的最后一个元素
+                curr.next =None         #将最后一个指向None
+                tail = q[-1] if len(q) > 0 else None    #更新新的tail为queue中的最后一个元素下一层的最后一个
+            else:
+                curr.next = q[0]
+        return root
+
+
+    # 96. Unique Binary Search Trees
+    # Input: n = 3
+    # Output: 5
+    #  Input: n = 1
+    # Output: 1
+    # https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/
+
+    # numTree[4] = numTree[0] * numTree[3]
+    #            = numTree[1] * numTree[2]
+    #            = numTree[2] * numTree[1]
+    #            = numTree[3] * numTree[0]
+
+    def numTrees(self, n):
+        numtree = [1] *(n+1)        #dynamic programming 把到n为止的解算出
+
+        # base case
+        # 0 nodes = 1 tree
+        # 1 nodes = 1 tree
+        # 所以找解的dynamic programming 从2开始（0，1都不算）
+        for nodes in range(2,n+1):
+            total = 0       #临时存0
+            for root in range(1,nodes+1):       #每个node作为root
+                left = root - 1
+                right = nodes - root
+                total += numtree[left] * numtree[right] #在里面找对应的后乘起来因为是combination
+            numtree[nodes] = total
+        return numtree[n]
+
+
+    # 95. Unique Binary Search Trees II
+    # Input: n = 3
+    # Output: [[1,null,2,null,3],[1,null,3,2],[2,1,3],[3,1,null,null,2],[3,2,null,1]]
+    # https://leetcode.com/problems/unique-binary-search-trees-ii/
+
+    # backtracking
+    def numgenerateTrees(self, n):
+        def dfs(st,end):        #edge case 如果start 大于 end
+            if st > end :
+                return [None]
+            ans = []
+            for i in range(st,end+1):   # i 现在遍历的node value
+                left = dfs(st,i-1)      # 当前点的左边去左树
+                right = dfs (i+1,end)   # 当前点的右边去右树
+                for l in left :         # 先左树再右树
+                    for r in right:
+                        root = Node(i)
+                        root.left = l
+                        root.right = r
+                        ans.append(root)
+            return ans
+        return (1,n)
+
+
+
+
+    # 331. Verify Preorder Serialization of a Binary Tree
+    # Input: preorder = "9,3,4,#,#,1,#,#,2,#,6,#,#"
+    # Output: true
+    # Input: preorder = "1,#"
+    # Output: false
+    # Input: preorder = "9,#,#,1"
+    # Output: false
+    # https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree/
+
+
+    def isValidSerialization(self, preorder):
+        stack = []
+        for n in preorder.split(","):       #用split隔开循环
+            stack.append(n)
+            # 连续出现三个#是肯定不对的
+            # stack最后两个item出现是#的时候说明是leaf node
+            # 将item pop出node用#代表进行下一层的检查
+            while len(stack)> 2 and stack[-2::]==["#"]*2 and stack[-3::]!="#":
+                stack.pop()
+                stack.pop()
+                stack.pop()
+                stack.append("#")
+        return stack == ["#"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
