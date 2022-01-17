@@ -69,16 +69,26 @@ class Solution:
         return dp[-1][-1]
 
 
+    # 64. Minimum Path Sum
+    # Input: grid = [[1,3,1],[1,5,1],[4,2,1]]
+    # Output: 7
+    # Input: grid = [[1,2,3],[4,5,6]]
+    # Output: 12
+    # https://leetcode.com/problems/minimum-path-sum/
+
     def minPathSum(self, grid):
         m = len(grid)
         n = len(grid[0])
-        for i in range(1, n):
-            grid[0][i] += grid[0][i - 1]
-        for i in range(1, m):
-            grid[i][0] += grid[i - 1][0]
-        for i in range(1, m):
-            for j in range(1, n):
-                grid[i][j] += min(grid[i - 1][j], grid[i][j - 1])
+
+        for c in range(1, n):       # 因为只能向下或往右将边缘的路径算好
+            grid[0][c] += grid[0][c - 1]
+
+        for r in range(1, m):
+            grid[r][0] += grid[r - 1][0]
+
+        for r in range(1, m):
+            for c in range(1, n):       # 将中间的填充好是上面或者右边过来
+                grid[r][c] += min(grid[r - 1][c], grid[r][c - 1])
         return grid[-1][-1]
 
 
@@ -153,14 +163,211 @@ class Solution:
         return dp[n]    #做coin changed problem
 
 
+    # 139. Word Break
+    # Input: s = "leetcode", wordDict = ["leet","code"]
+    # Output: true
+    # Input: s = "applepenapple", wordDict = ["apple","pen"]
+    # Output: true
+    # Input: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+    # Output: false
+    # https://leetcode.com/problems/word-break/
+
+
+
+    def wordBreak(self, s, wordDict):
+        dp = [False]*(len(s)+1)
+        dp[len(s)] = True   #最后一个肯定是true
+        for i in range (len(s),-1,-1):
+            for w in wordDict:
+                if i+len(w) <= len(s) and s[i:i+len(w)] == w : #构造的长度得小于s的长度同时substring得等于w
+                    dp[i] = dp[i+len(w)]  #将这个点开始的设置为true利用加长度
+                if dp[i]:   #不需要再找别的word
+                    break
+        return dp[0]
+
+
+    # 322. Coin Change
+    # Input: coins = [1,2,5], amount = 11
+    # Output: 3
+    # Input: coins = [2], amount = 3
+    # Output: -1
+    def coinChange(self, coins, amount):
+        dp = [amount+1]*(amount+1)
+        dp[0]=0
+        for a in range(1,amount+1):
+            for c in coins:         #遍历所有的硬币的大小
+                if a - c >= 0:      #如果是大于0可能就是一种接法
+                    dp[a] = min(dp[a],1+dp[a-c])    #更新最优解
+        return dp[amount] if dp[amount]!= amount + 1 else -1
+
+    # 72. Edit Distance
+    # Given two strings word1 and word2, return the minimum number of
+    # operations required to convert word1 to word2.
+    # You have the following three operations permitted on a word:
+    #
+    # Insert a character
+    # Delete a character
+    # Replace a character
+
+    # Input: word1 = "horse", word2 = "ros"
+    # Output: 3
+    # Explanation:
+    # horse -> rorse (replace 'h' with 'r')
+    # rorse -> rose (remove 'r')
+    # rose -> ros (remove 'e')
+
+    # https://leetcode.com/problems/edit-distance/
+
+
+
+    def minDistance(self, word1, word2):
+        dp = [[float("inf")] * (len(word2)+1) for i in range(len(word1)+1)]
+
+        for c in range(len(word2)+1):
+            dp[len(word1)][c] = len(word2) - c   #word1 = ""是空的到word2的距离就是加多少个词
+
+        for r in range(len(word1)+1):
+            dp[r][len(word2)] = len(word1) - r  #word2 = ""是空的到word1的距离就是加多少个词
+
+        for r in range(len(word1)-1,-1,-1):
+            for c in range(len(word2)-1,-1,-1):
+                if word1[r] == word2[c]:        #如果两个值相同
+                    dp[r][c] = dp[r+1][c+1]
+                else:     # 1 more step   delete    insert     replace
+                    dp[r][c] = 1+ min(dp[r+1][c],dp[r][c+1],dp[r+1][c+1])
+
+        return dp[0][0]
+
+
+    # 97. Interleaving String
+    # Input: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbcbcac"
+    # Output: true
+    # Input: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbbaccc"
+    # Output: false
+    # https://leetcode.com/problems/interleaving-string/
+    def isInterleave(self, s1, s2, s3):
+        dp = [[False]*(len(s2)+1) for _ in range (len(s1)+1)]
+        dp[len(s1)][len(s2)]=True
+        for i in range(len(s1),-1,-1):
+            for j in range(len(s2),-1,-1):
+                if i<len(s1) and s1[i]==s3[i+j] and dp[i+1][j]: # 检查s1往下一个词是否match
+                    dp[i][j] = True
+                if j<len(s2) and s2[j]==s3[i+j] and dp[i][j+1]: # 检查s2往下一个词是否match
+                    dp[i][j] = True
+        return dp[0][0]
+
+
+    # 221. Maximal Square
+    # Input: matrix = [["1","0","1","0","0"],["1","0","1","1","1"],
+    #                   ["1","1","1","1","1"],["1","0","0","1","0"]]
+    # Output: 4
+    # Input: matrix = [["0","1"],["1","0"]]
+    # Output: 1
+    # Input: matrix = [["0"]]
+    # Output: 0
+    # https://leetcode.com/problems/maximal-square/
+
+
+    def maximalSquare(self, matrix):
+        maxsquare = 0
+        if not matrix:
+            return maxsquare
+        dp = matrix
+        for c in range(len(matrix[0])):     #填充行和列没区别和原本的一样
+            dp[0][c]= int(matrix[0][c])
+
+        for r in range(len(matrix)):
+            dp[r][0] = int(matrix[r][0])
+
+
+        for r in range(1,len(matrix)):
+            for c in range (1,len(matrix[0])):
+                if r>0 and c>0 :#保护edge case
+                    if matrix[r][c] == "1":
+                        dp[r][c] = 1 + min(dp[r][c-1],dp[r-1][c],dp[r-1][c-1])
+                    else:               #匹配到最小的。如果是正方形的时三个方向都会是一样的值
+                        dp[r][c] = 0
+                maxsquare = max(maxsquare,dp[r][c])
+        return maxsquare * maxsquare
+
+
+
+    # 198. House Robber
+    # Input: nums = [1,2,3,1]
+    # Output: 4
+    # Input: nums = [2,7,9,3,1]
+    # Output: 12
+    # https://leetcode.com/problems/house-robber/
+
+
+    def rob(self, nums):
+        # [rob1,rob2,n,n+1,...]
+        rob1,rob2 = 0,0     # max can rob for the pervous two house
+        for n in nums: # current house that we are at / do not rob
+            temp = max(n+rob1,rob2) # 比较大小当前抢的大还是跳过大
+            rob1 = rob2     #rob1 移动到下一个点
+            rob2 = temp     #rob2 记录当前最大值
+        return rob2
+
+    # 213. House Robber II
+    # Input: nums = [2,3,2]
+    # Output: 3
+    # Input: nums = [1,2,3,1]
+    # Output: 4
+    # https://leetcode.com/problems/house-robber-ii/
+
+
+
+    def rob2(self,nums):
+        return max(nums[0],self.rob(nums[1:]),self.rob(nums[:-1]))
+            # 尾巴和头不能连接将问题分为两个subarray来看找最大的
+
+
+    # 91. Decode Ways
+    # Input: s = "12"
+    # Output: 2
+    # Explanation: "12" could be decoded as "AB" (1 2) or "L" (12).
+    # Input: s = "226"
+    # Output: 3
+    # Explanation: "226" could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
+    # Input: s = "06"
+    # Output: 0
+    # Explanation: "06" cannot be mapped to "F" because of the leading zero ("6" is different from "06").
+    # https://leetcode.com/problems/decode-ways/
+
+    def numDecodings(self, s):
+        dp = {len(s):1}         #base case原始设定是1
+        for i in range(len(s)-1,-1,-1):
+            if s[i] == "0":     #如果第一个是0这个位置的组合是0
+                dp[i] = 0
+            else:
+                dp[i]=dp[i+1]   #数自己本身就是个组合所以跟随前面的累加
+
+            if (i+1 <len(s) and (s[i] == "1" or s[i]=="2" and s[i+1] in "0123456")):
+                dp[i]+=dp[i+2]      #如果是两位数的情况 加上前两个index的情况
+        return dp[0]
+
+
+
+
+
+
+
+
+
 
 a= [-2,1,-3,4,-1,2,1,-5,4]
 object = Solution()
 print(object.maxSubArray(a))
-print(object.climbStairs(5))
+print(object.climbStairs(3))
 print(object.isSubsequence("abc","ahbgdc"))
 print(object.uniquePaths(3,7))
 print(object.minPathSum([[1,3,1],[1,5,1],[4,2,1]]))
 print(object.uniquePathsWithObstacles([[0,0,0],[0,1,0],[0,0,0]]))
 print(object.minimumTotal([[2],[3,4],[6,5,7],[4,1,8,3]]))
 print(object.numSquares(12))
+print(object.wordBreak("leetcode",["leet","code"]))
+print(object.minDistance("horse","ros"))
+print(object.isInterleave("aabcc","dbbca","aadbbcbcac"))
+print(object.maximalSquare([["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]))
+print(object.numDecodings("226"))

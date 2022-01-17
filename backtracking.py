@@ -210,7 +210,7 @@ class Solution:
             nums.sort()
             return nums
         swap = n-1
-        while nums[pivot-1] >= nums[swap]:      #循环到比pivot刚好比pivot大的点上，因为是升序所以找到的肯定是比他大一点的
+        while nums[pivot-1] >= nums[swap]: #循环到比pivot大的点上，因为是升序所以找到的肯定是比他大一点的
             swap -=1
         nums[pivot-1],nums[swap] = nums[swap],nums[pivot-1]     #找到位置后进行swap
         nums[pivot:] = sorted(nums[pivot:])     #将剩余的反转排序

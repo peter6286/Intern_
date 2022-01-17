@@ -144,6 +144,93 @@ class Solution:
         return dummy.next
 
 
+    # 237. Delete Node in a Linked List
+    # Input: head = [4,5,1,9], node = 5
+    # Output: [4,1,9]
+    # Input: head = [4,5,1,9], node = 1
+    # Output: [4,5,9]
+    # https://leetcode.com/problems/delete-node-in-a-linked-list/
+    def deleteNode(self, node):
+        node.val = node.next.val
+        node.next = node.next.next
+
+
+    # 19. Remove Nth Node From End of List
+    # Input: head = [1,2,3,4,5], n = 2
+    # Output: [1,2,3,5]
+    # Input: head = [1], n = 1
+    # Output: []
+    # Input: head = [1,2], n = 1
+    # Output: [1]
+    # https://leetcode.com/problems/remove-nth-node-from-end-of-list/
+    def removeNthFromEnd(self, head, n):
+        slow,fast = head,head
+        for i in range(n):
+            fast = fast.next
+
+        if not fast :
+            return head.next
+
+        while fast.next:
+            slow =  slow.next
+            fast = fast.next
+        slow.next = slow.next.next
+
+        return head
+
+
+    # 83. Remove Duplicates from Sorted List
+    # Given the head of a sorted linked list, delete all duplicates such that each
+    # element appears only once. Return the linked list sorted as well.
+    # Input: head = [1,1,2]
+    # Output: [1,2]
+    # Input: head = [1,1,2,3,3]
+    # Output: [1,2,3]
+    # https://leetcode.com/problems/remove-duplicates-from-sorted-list/
+
+    def deleteDuplicates(self, head):
+        curr = head
+        while curr and curr.next :
+            if curr.val == curr.next.val:
+                curr.next = curr.next.next
+            else:
+                curr = curr.next
+        return head
+
+
+
+    # 203. Remove Linked List Elements
+    # Input: head = [1,2,6,3,4,5,6], val = 6
+    # Output: [1,2,3,4,5]
+    # Input: head = [], val = 1
+    # Output: []
+    # Input: head = [7,7,7,7], val = 7
+    # Output: []
+    #  https://leetcode.com/problems/remove-linked-list-elements/
+
+    def removeElements(self, head,val):
+        dummy = Node(nex = head)
+        perv,curr = dummy ,head
+
+        while curr:
+            nxt = curr.next
+            if curr.val == val:
+                perv.next = nxt
+            else:
+                perv = curr
+            curr = nxt
+        return dummy.next
+
+
+
+
+
+
+
+
+
+
+
 
 
 object= Solution()
