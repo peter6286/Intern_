@@ -286,12 +286,14 @@ class Solution:
         def backtrack(num,stack,target):
             if len(stack)==k:
                 if target ==0 :
-                    res.append(stack)
+                    res.append(stack[:])
                 return
 
             for x in range (num+1,10):
                 if x <= target:
-                    backtrack(x,stack+[x],target-x)
+                    stack.append(x)
+                    backtrack(x,stack,target-x)
+                    stack.pop()
 
         backtrack(0,[],n)
         return res

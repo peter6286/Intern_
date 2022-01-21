@@ -1,4 +1,13 @@
 class Solution:
+    # 53. Maximum Subarray
+    # Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+    # Output: 6
+    # Explanation: [4,-1,2,1] has the largest sum = 6.
+    # Input: nums = [1]
+    # Output: 1
+    # Input: nums = [5,4,-1,7,8]
+    # Output: 23
+    # https://leetcode.com/problems/maximum-subarray/
     def maxSubArray(self, nums):
         if not nums:
             return 0
@@ -32,15 +41,20 @@ class Solution:
             d[n] = self.climbStairs(n - 1, d) + self.climbStairs(n - 2, d) #dictionary里只有1和2
         return d[n] #按值返回
 
+
+    # 392. Is Subsequence
+    # https://leetcode.com/problems/is-subsequence/
+
+
     def isSubsequence(self, s, t):
         i = 0
         j = 0
         while (j < len(t) and i < len(s)):
-            if (s[i] == t[j]):
+            if (s[i] == t[j]):      #如果找到了i和j一块移动
                 i += 1
                 j += 1
             else:
-                j += 1
+                j += 1          # 没有找到的情况下只移动j
         if (i == len(s)):
             return True
         return False
