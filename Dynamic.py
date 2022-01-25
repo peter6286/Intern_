@@ -191,7 +191,7 @@ class Solution:
     def wordBreak(self, s, wordDict):
         dp = [False]*(len(s)+1)
         dp[len(s)] = True   #最后一个肯定是true
-        for i in range (len(s),-1,-1):
+        for i in range (len(s),-1,-1):  #倒序
             for w in wordDict:
                 if i+len(w) <= len(s) and s[i:i+len(w)] == w : #构造的长度得小于s的长度同时substring得等于w
                     dp[i] = dp[i+len(w)]  #将这个点开始的设置为true利用加长度
