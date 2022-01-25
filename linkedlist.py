@@ -425,6 +425,14 @@ class Solution:
 
 
     # 148. Sort List
+    # Input: head = [4,2,1,3]
+    # Output: [1,2,3,4]
+    # Input: head = [-1,5,3,4,0]
+    # Output: [-1,0,3,4,5]
+    # Input: head = []
+    # Output: []
+    # https://leetcode.com/problems/sort-list/
+
     def sortList(self, head):
         # 找中间的点
         def findmid(head):
@@ -464,6 +472,13 @@ class Solution:
         return merge(left,right)
 
 
+    # 61. Rotate List
+    # Input: head = [1,2,3,4,5], k = 2
+    # Output: [4,5,1,2,3]
+    # Input: head = [0,1,2], k = 4
+    # Output: [2,0,1]
+    # https://leetcode.com/problems/rotate-list/
+
 
     def rotateRight(self, head, k):
         if not head:
@@ -488,6 +503,62 @@ class Solution:
         cur.next = None
         tail.next = head
         return newhead
+
+    # 86. Partition List
+    # Input: head = [1,4,3,2,5,2], x = 3
+    # Output: [1,2,2,4,3,5]
+    # Input: head = [2,1], x = 2
+    # Output: [1,2]
+    # https://leetcode.com/problems/partition-list/
+
+    def partition(self, head, x):
+        left,right = Node(),Node()
+        ltail,rtail = left,right
+        while head:         # 根据x的值切分为两个linked list
+            if head.val < x :
+                ltail.next = head
+                ltail = ltail.next
+            else:
+                rtail.next = head
+                retail = retail.next
+            head = head.next
+        # 将尾巴连上
+        ltail.next = right.next
+        rtail.next = None
+
+        return left.next
+
+
+    # 147. Insertion Sort List
+    # Input: head = [4,2,1,3]
+    # Output: [1,2,3,4]
+    # Input: head = [-1,5,3,4,0]
+    # Output: [-1,0,3,4,5]
+    # https://leetcode.com/problems/insertion-sort-list/
+
+
+    def insertionSortList(self, head):
+        if not head or not head.next:
+            return head
+        dummmy_head = Node(next_=head)
+        last_sorted = head
+        curr = head.next
+        while curr :
+            if curr.val >= last_sorted.val :
+                last_sorted = last_sorted.next
+            else:
+                perv = dummmy_head
+                while perv.next.val <= curr.val:
+                    prev = perv.next
+                last_sorted.next = curr.next
+                curr.next = perv.next
+                prev.next = curr
+            curr = last_sorted.next
+
+        return dummmy_head.next
+
+
+
 
 
 

@@ -259,12 +259,13 @@ class Solution:
     # Input: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbbaccc"
     # Output: false
     # https://leetcode.com/problems/interleaving-string/
+    # s1 s2 到了最后就out of bound 就是base case
     def isInterleave(self, s1, s2, s3):
-        dp = [[False]*(len(s2)+1) for _ in range (len(s1)+1)]
+        dp = [[False]*(len(s2)+1) for _ in range(len(s1)+1)]
         dp[len(s1)][len(s2)]=True
         for i in range(len(s1),-1,-1):
             for j in range(len(s2),-1,-1):
-                if i<len(s1) and s1[i]==s3[i+j] and dp[i+1][j]: # 检查s1往下一个词是否match
+                if i<len(s1) and s1[i]==s3[i+j] and dp[i+1][j]: #不能再用了  检查s1往下一个词是否match
                     dp[i][j] = True
                 if j<len(s2) and s2[j]==s3[i+j] and dp[i][j+1]: # 检查s2往下一个词是否match
                     dp[i][j] = True
