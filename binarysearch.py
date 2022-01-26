@@ -142,12 +142,12 @@ class Solution:
         left,right = 0 ,len(nums)-1
         while left < right:
             mid = (left+right)//2
-            if nums[mid] > nums[mid+1] and nums[mid] > nums[mid-1]:
+            if nums[mid] > nums[mid+1] and nums[mid] > nums[mid-1]: #刚好是中间大的元素返回
                 return mid
-            if nums[mid]< nums[mid+1]:
+            if nums[mid]< nums[mid+1]:  #右边比较大移动到右边的点上再比较
                 left = mid + 1
             else:
-                right = mid - 1
+                right = mid - 1     #左边的点比较大移动到左边上的点后再比较
         return left
 
     # 374. Guess Number Higher or Lower
@@ -171,6 +171,102 @@ class Solution:
             else:
                 return mid
 
+    # 34. Find First and Last Position of Element in Sorted Array
+    # Input: nums = [5,7,7,8,8,10], target = 8
+    # Output: [3,4]
+    # Input: nums = [5,7,7,8,8,10], target = 6
+    # Output: [-1,-1]
+    # Input: nums = [], target = 0
+    # Output: [-1,-1]
+    # https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+
+    def searchRange(self, nums, target):
+        left,right = 0,len(nums)-1
+        while left < right:
+            if nums[left]!= target:
+                left += 1
+            elif nums[right]!=target:
+                right-=1
+            elif nums[left]== target and nums[right]==target:
+                return [left,right]
+        return [-1,-1]
+
+
+    # 349. Intersection of Two Arrays
+    # Input: nums1 = [1,2,2,1], nums2 = [2,2]
+    # Output: [2]
+    # Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+    # Output: [9,4]
+    # Explanation: [4,9] is also accepted.
+    # https://leetcode.com/problems/intersection-of-two-arrays/
+
+    def intersection(self, nums1, nums2):
+        d = { }
+        res = []
+        for n in nums1:
+            d[n]=1
+
+        for n in nums2:
+            #  # Check if n is in dictionary and not in the result
+            if n in d and d[n]:
+                res.append(n)
+                d[n] -= 1
+            # It will set the value of d[n] = 0 which will indicate we already added n in result
+        return res
+
+
+    # 350. Intersection of Two Arrays II
+    # Input: nums1 = [1,2,2,1], nums2 = [2,2]
+    # Output: [2,2]
+    # Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+    # Output: [4,9]
+    # Explanation: [9,4] is also accepted.
+    # https://leetcode.com/problems/intersection-of-two-arrays-ii/
+
+    def intersection2(self, nums1, nums2):
+        d = {}
+        res = []
+        for n in nums1:     #dict 累加
+            if n not in d:
+                d[n]=1
+            else:
+                d[n] += 1
+
+        for n in nums2:
+            if n in d and d[n] > 0 :
+                res.append(n)       #继续输入进去直到dict值没有为止
+                d[n] -= 1
+        return res
+
+
+    # 300. Longest Increasing Subsequence
+    # Input: nums = [10,9,2,5,3,7,101,18]
+    # Output: 4
+    # Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+    # Input: nums = [0,1,0,3,2,3]
+    # Output: 4
+    # Input: nums = [7,7,7,7,7,7,7]
+    # Output: 1
+    # https://leetcode.com/problems/longest-increasing-subsequence/
+
+    # [1,2,4,3]
+    # LIS[3] = 1 , LIS[2] = max(1,1+LIS[3]),LIS[1] = max(1,1+LIS[2]),1+LIS[3]),LIS[0]=max(LIS[i],1+LIS[j])
+    def lengthOfLIS(self, nums):
+        LIS = [1] * len(nums)
+        for i in range(len(nums)-1,-1,-1):
+            for j in range(i+1,len(nums)):
+                if nums[i] < nums[j]:
+                    LIS[i] = max(LIS[i],1+LIS[j])
+        return max(LIS)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -182,7 +278,10 @@ print(object.search([2,5,6,0,0,1,2],0))
 print(object.search2([1,0,1,1,1],0))
 print(object.findMin([3,4,5,1,2]))
 print(object.findPeakElement([1,2,3,1]))
-
+print(object.searchRange([],0))
+print(object.intersection([4,9,5],[9,4,9,8,4]))
+print(object.intersection2([1,2,2,1],[2,2]))
+print(object.lengthOfLIS([10,9,2,5,3,7,101,18]))
 
 
 
