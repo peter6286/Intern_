@@ -157,7 +157,7 @@ class Solution:
 
             for i in range(len(nums)):
                 cur.append(nums[i])
-                backtreack(nums[:i] + nums[i + 1:], cur , res) #在当前遍历的item除外的都可以在nums里 choose one 选别的
+                backtreack(nums[:i] + nums[i + 1:], cur, res) #在当前遍历的item除外的都可以在nums里 choose one 选别的
                 cur.pop()
         backtreack(nums, [], res)           #确保nums在位置上
         return res
