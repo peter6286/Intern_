@@ -323,7 +323,7 @@ class Solution:
     def minDepth(self, root):   #用level来分开做sub-tree 用dfs循环从下往上算出来
         if not root :
             return 0
-        if not root.left and not root.right:
+        if not root.left and not root.right: # base case leaf node 也是1
             return 1
 
         if not root.left and root.right:    #只有右边有
@@ -371,7 +371,7 @@ class Solution:
             if not root :
                 return [True,0]
             left,right = dfs(root.left),dfs(root.right)  #往两边search
-            balance = (left[0] and right[0] and abs(left[0]-left[1])<=1)  # 判断是不是balance
+            balance = (left[0] and right[0] and abs(left[1]-right[1])<=1)  # 判断是不是balance
             return [balance,1+max(left[1],right[1])]  #把深度继续加上去
         return dfs(root)[0]
 
@@ -419,7 +419,7 @@ class Solution:
                 if node.right:
                     q.append(node.right)
             res.append(tmp)  # Dump level to res, we will now move onto the next level.
-        res = res[::-1]
+        res = res[::-1]  #把结果反过来即可
         return res
 
 
@@ -473,7 +473,7 @@ class Solution:
             size = len(q)  # Get number of elements on level
             val = 0
             for i in range(0, size):  # Empty entire level
-                node = q.pop(0)
+                node = q.pop(0)         # node一直会到这一层的最右边所以val一直会变
                 val = node.val
                 if node.left:
                     q.append(node.left)
@@ -531,12 +531,12 @@ class Solution:
         def dfs(node):
             if not node :
                 return False
-            left = dfs(node.left)
+            left = dfs(node.left)           # 先用dfs找到他们的位置
             right = dfs(node.right)
             cur = node == p or node == q  #当其中有一个点等于p 或 q 时
-            if (left and right) or (cur and left) or (cur and right):
+            if (left and right) or (cur and left) or (cur and right): # this node is the ancestor
                 self.ans = node
-                return
+                return                  #dfs中点会回跳所以curr会回到ancestor上
             return left or right or cur
         dfs(root)
         return self.ans
