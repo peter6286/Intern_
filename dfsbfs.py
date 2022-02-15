@@ -176,7 +176,12 @@ class Solution:
             return (self.stack1) == 0
 
 
-
+    # 225. Implement Stack using Queues
+    # Input
+    # ["MyStack", "push", "push", "top", "pop", "empty"]
+    # [[], [1], [2], [], [], []]
+    # Output
+    # [null, null, null, 2, 2, false]
 
     class MyStack(object):
         def __init__(self):
@@ -199,32 +204,136 @@ class Solution:
         def empty(self):
             return len(self.q1)==0
 
-    def zigZag(self,arr, n):
-        # Flag true indicates relation "<" is expected,
-        # else ">" is expected. The first expected relation
-        # is "<"
-        flag = True
-        count = 0
-        for i in range(n - 1):
-            # "<" relation expected
-            if flag is True:
-                # If we have a situation like A > B > C,
-                # we get A > B < C
-                # by swapping B and C
-                if arr[i] > arr[i + 1]:
-                    arr[i], arr[i + 1] = arr[i + 1], arr[i]
-                    count +=1
-                # ">" relation expected
+
+    # 150. Evaluate Reverse Polish Notation
+    # Input: tokens = ["2","1","+","3","*"]
+    # Output: 9
+    # Explanation: ((2 + 1) * 3) = 9
+    # Input: tokens = ["4","13","5","/","+"]
+    # Output: 6
+    # Explanation: (4 + (13 / 5)) = 6
+
+    def evalRPN(self, tokens):
+        stack = []
+        for t in tokens:
+            if t not in "+-*/":
+                stack.append(int(t))
             else:
-                # If we have a situation like A < B < C,
-                # we get A < C > B
-                # by swapping B and C
-                if arr[i] < arr[i + 1]:
-                    arr[i], arr[i + 1] = arr[i + 1], arr[i]
-                    count +=1
-            flag = bool(1 - flag)
-        print(arr)
-        return count
+                r, l = stack.pop(), stack.pop()
+                if t == "+":
+                    stack.append(l + r)
+                elif t == "-":
+                    stack.append(l - r)
+                elif t == "*":
+                    stack.append(l * r)
+                else:
+                    stack.append(int(float(l) / r))
+        return stack.pop()
+
+    # 71. Simplify Path
+    # Input: path = "/home/"
+    # Output: "/home"
+    # Explanation: Note that there is no trailing slash after the last directory name.
+
+    def simplifyPath(self, path):
+        stack = []
+        cur = ""
+        for c in path + "/":
+            if c == "/":            #用\来进行dictory分层所以结尾的时候得加"\"
+                if cur == "..":     #如果curr里只有两个dot说明回到上层dict 需要用pop
+                    if stack:stack.pop()
+                    elif cur != "" and cur!=".":   #除了特殊情况外都将curr压入stack中
+                        stack.append(cur)
+                    cur =""         #清空stack
+            else:
+                cur += c
+        return "/" + "/".join(stack)        #用join操作连接所有东西在一起
+
+
+    # 388. Longest Absolute File Path
+    # Input: input = "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
+    # Output: 20
+    # Explanation: We have only one file, and the absolute path is "dir/subdir2/file.ext" of length 20.
+    # Input: input = "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
+    # Output: 32
+
+    def lengthLongestPath(self, s) :
+        paths, stack, ans = s.split('\n'), [], 0
+        for path in paths:
+            p = path.split('\t')            #用切割\t来识别现在的深度
+            depth, name = len(p) - 1, p[-1]
+            l = len(name)
+            while stack and stack[-1][1] >= depth:  #如果之前的深度比现在遍历的深返回同一级上继续遍历
+                stack.pop()
+            if not stack:
+                stack.append((l, depth))    # stack [current total length][depth of the path]
+            else:
+                stack.append((l + stack[-1][0], depth))     #现在path的长度和深度放进stack中
+            if '.' in name: ans = max(ans, stack[-1][0] + stack[-1][1])
+        return ans
+
+
+    # 394. Decode String
+    # Input: s = "3[a]2[bc]"
+    # Output: "aaabcbc"c
+    # Input: s = "3[a2[c]]"
+    # Output: "accaccacc"
+    # Input: s = "2[abc]3[cd]ef"
+    # Output: "abcabccdcdcdef"
+    # https://leetcode.com/problems/decode-string/
+
+    def decodeString(self, s):
+        stack = []
+        for i in range(len(s)):
+            if s[i] !="]":
+                stack.append(s[i])
+            else:
+                substr = ""
+                while stack[-1] != "]":
+                    substr = stack.pop() + substr
+                stack.pop()
+
+                k = ""
+                while stack and stack[-1].isdigit():
+                    k=stack.pop()+k
+                stack.append(int(k)*substr)
+
+        return "".join(stack)
+
+    def calculate(self, s):
+        num = 0
+        pre_op = '+'
+        s += '+'
+        stack = []
+        for c in s:
+            if c.isdigit():
+                num = num * 10 + int(c)
+            elif c == ' ':
+                continue
+            else:
+                if pre_op == '+':
+                    stack.append(num)
+                elif pre_op == '-':
+                    stack.append(-num)
+                elif pre_op == '*':
+                    operant = stack.pop()
+                    stack.append((operant * num))
+                elif pre_op == '/':
+                    operant = stack.pop()
+                    stack.append(math.trunc(operant / num))
+                num = 0
+                pre_op = c
+        return sum(stack)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -242,15 +351,11 @@ class Solution:
 
 
 object = Solution()
-print(object.numIslands([
-  ["1","1","1","1","0"],
-  ["1","1","0","1","0"],
-  ["1","1","0","0","0"],
-  ["0","0","0","0","0"]
-]))
-print(object.solve([["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]))
+
+#print(object.solve([["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]))
 arr = [2,1,2,3,4,5,2,9]
 n = len(arr)
-print(object.zigZag(arr, n))
+#print(object.zigZag(arr, n))
 print(15//2)
-
+print(object.lengthLongestPath("dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"))
+print(object.calculate("3+2*2"))
