@@ -300,6 +300,13 @@ class Solution:
 
         return "".join(stack)
 
+
+    # 227. Basic Calculator II
+    # Input: s = "3+2*2"
+    # Output: 7
+    # Input: s = " 3/2 "
+    # Output: 1
+
     def calculate(self, s):
         num = 0
         pre_op = '+'
@@ -324,6 +331,80 @@ class Solution:
                 num = 0
                 pre_op = c
         return sum(stack)
+
+
+    # 215. Kth Largest Element in an Array
+    # Input: nums = [3,2,1,5,6,4], k = 2
+    # Output: 5
+    # Input: nums = [3,2,3,1,2,4,5,5,6], k = 4
+    # Output: 4
+
+    def findKthLargest(self, nums, k):
+        nums.sort()
+        return nums[-k]
+
+
+    # 347. Top K Frequent Elements
+    # Input: nums = [1,1,1,2,2,3], k = 2
+    # Output: [1,2]
+    # Input: nums = [1], k = 1
+    # Output: [1]
+
+    def topKFrequent(self, nums, k):
+        count = {}
+        freq = [[]for i in range(len(nums)+1)]
+
+        for n in nums:      # 先算出每个数字出现的次数
+            count[n] = 1 + count.get(n,0)
+        for n,c in count.items():   #再用出现的频率对应数字
+            freq[c].append(n)
+        print(freq)
+        res = []
+        for i in range(len(freq)-1,0,-1):   #从后开始找
+            for n in freq[i]:
+                res.append(n)
+                if len(res)==k:     # 当结果和k一样的时候
+                    return res
+
+
+
+    # 341. Flatten Nested List Iterator
+    # Input: nestedList = [[1,1],2,[1,1]]
+    # Output: [1,1,2,1,1]
+    # Input: nestedList = [1,[4,[6]]]
+    # Output: [1,4,6]
+
+    class NestedIterator(object):
+
+        def __init__(self, nestedList):
+            def flatten(nl):
+                tmp = []
+                for i in nl:
+                    if i.isInteger():
+                        tmp.append(i.getInteger)
+                    else:
+                        tmp.extend(flatten(i.getList()))
+                return tmp
+            self.n = [flatten(nestedList)]
+
+            """
+            Initialize your data structure here.
+            :type nestedList: List[NestedInteger]
+            """
+
+        def next(self):
+            return self.n.pop(0)
+
+        """
+        :rtype: int
+         """
+
+        def hasNext(self):
+            return self.n
+        """
+        :rtype: bool
+        """
+
 
 
 
@@ -359,3 +440,5 @@ n = len(arr)
 print(15//2)
 print(object.lengthLongestPath("dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"))
 print(object.calculate("3+2*2"))
+print(object.findKthLargest([3,2,3,1,2,4,5,5,6],4))
+print(object.topKFrequent([4,1,-1,2,-1,2,3],2))
