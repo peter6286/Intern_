@@ -326,6 +326,28 @@ class Solution:
         return sum(stack)
 
 
+    # 402. Remove K Digits
+    # Input: num = "1432219", k = 3
+    # Output: "1219"
+    # Input: num = "10200", k = 1
+    # Output: "200"
+
+    # 按increasing order 如果order断了就在stack中pop出去掉
+    # 如果是多的直接用num的大小减stack得到
+
+    def removeKdigits(self, num, k):
+        stack = []
+        for c in num:
+            while k > 0 and stack and stack[-1]>c:  #如果order断了
+                k-=1
+                stack.pop()
+            stack.append(c)
+
+        stack = stack[:len(stack)-k]        # 整个都是increasing order 的情况下去掉最后的
+        res = "".join(stack)
+        return str(int(res)) if res else "0"
+
+
 
 
 

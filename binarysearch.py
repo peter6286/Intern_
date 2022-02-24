@@ -82,15 +82,15 @@ class Solution:
             mid = (left+right)//2
             if nums[mid] == target:
                 return True
-            if nums[left] <= nums[mid]:
-                if nums[left] == nums[mid] and mid != left:
-                    left +=1
+            if nums[left] <= nums[mid]:     #正常的在在左半边找
+                if nums[left] == nums[mid] and mid != left: # 检查mid和left的元素是一样的
+                    left +=1        # 如果是一样的就往前
                     continue
                 if nums[left] <= target < nums[mid]:
                     right = mid - 1
                 else:
                     left = mid + 1
-            elif nums[left] > nums[mid]:
+            elif nums[left] > nums[mid]:    # left是rotate后最大的所以回到右半边找
                 if nums[mid] < target <= nums[right]:
                     left = mid + 1
                 else:

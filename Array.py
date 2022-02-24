@@ -21,21 +21,14 @@ class Solution:
         return nums
     #80
     def removeDuplicates2(self, nums) :
-        reader, writer, count = 1, 0, 1 #reader从第二个开始读/
-
-        while reader < len(nums):
-
-            if nums[reader] == nums[writer]: #如果一样
-                if count < 2:       #检查是否出现两次
-                    writer += 1     #确定可以写入后再往前
-                    nums[writer] = nums[reader]
-                    count += 1
-            else:       #如果不一样重置count变1
-                writer += 1
-                nums[writer] = nums[reader]
-                count = 1
-            reader += 1
-        return writer+1
+        if len(nums)<3:
+            return len(nums)
+        len_ = 2   # 替换的点
+        for i in range (2,len(nums)):
+            if nums[i] != nums[len_-2]: #检查和前面的两个点是否相同
+                nums[len_] = nums[i]
+                len_ +=1
+        return len_
 
     #189
     def rotate(self, nums, k):

@@ -668,7 +668,7 @@ class Solution:
 
             perv = temp
             curr = temp.right
-
+            # 在replace的list中替换这两个点
             replace[0][0].val, replace[-1][1].val = replace[-1][1].val, replace[0][0].val
 
     # 114. Flatten Binary Tree to Linked List
@@ -730,7 +730,7 @@ class Solution:
         if not preorder or not inorder:
             return None
         root = Node(preorder[0])
-        mid = inorder.index([preorder[0]])
+        mid = inorder.index([preorder[0]]) #用mid把左树右树分开
         root.left = self.buildTree(preorder[1:mid+1],inorder[:mid])
         root.right = self.buildTree(preorder[mid+1:],inorder[mid+1:])
         return root
@@ -856,7 +856,7 @@ class Solution:
             # 连续出现三个#是肯定不对的
             # stack最后两个item出现是#的时候说明是leaf node
             # 将item pop出node用#代表进行下一层的检查
-            while len(stack)> 2 and stack[-2::]==["#"]*2 and stack[-3::]!="#":
+            while len(stack)> 2 and stack[-2::]==["#"]*2 and stack[-3]!="#":
                 stack.pop()
                 stack.pop()
                 stack.pop()
