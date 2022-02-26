@@ -45,6 +45,30 @@ def toggle(num):
             fivelist.append(int(numlist[:i]+numlist[i+1:]))
     return max(fivelist)
 
+
+def solution(A):
+    dict = {}
+    count = 0
+    for item in A:
+        if item not in dict:
+            dict[item]=1
+        else:
+            dict[item]+=1
+    print(dict)
+    if len(dict) == 1:
+        count = list(dict.values())[0]
+    elif len(dict)%2==0:
+        for i in dict:
+            if dict[i]>=2:
+                count+=dict[i]
+    else:
+        return len(dict)
+    return count
+
+A=[4,2,2,4,2]
+B=[1,2,3,4]
+C= [0,5,4,4,5,12]
 print(findday("Wed",2))
 print(balance("TacoCat"))
 print(toggle(-5000))
+print(solution(B))

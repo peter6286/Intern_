@@ -523,8 +523,28 @@ class Solution:
         nums[::2], nums[1::2] = nums[:half][::-1], nums[half:][::-1]  #nums里的偶数index放排序后中间较小的index
         return nums                                                  #nums里的奇数index放排序后中间较大的index
 
+    def findDisappearedNumbers(self, nums):
+        dict = {}
+        res = []
+        for i in range(1,len(nums)+1):
+            dict[i]=0
+        print(dict)
+        for item in nums:
+            dict[item]+=1
+        for key,value in dict.items():
+            if dict[key] == 0:
+                res.append(key)
+        return res
 
-
+    def findDisappearedNumbers2(self, nums):
+        for n in nums:
+            i = abs(n)-1        #让数字到对应的index上
+            nums[i] = -1 *abs(nums[i])
+        res = []
+        for i,n in enumerate(nums):
+            if n > 0:   #将不是负的元素(不在range中的元素)放入队列中
+                res.append(i+1)
+        return res
 
 
 
@@ -565,3 +585,4 @@ print(object.maxProduct([-2,0,-1]))
 print(object.summaryRanges([0,2,3,4,6,8,9]))
 print(object.sortColors([0,1,2]))
 print(object.wiggleSort([1,5,1,1,6,4]))
+print(object.findDisappearedNumbers([4,3,2,7,8,2,3,1]))
