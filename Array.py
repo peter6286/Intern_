@@ -547,6 +547,98 @@ class Solution:
         return res
 
 
+    # 1288. Remove Covered Intervals
+    # Input: intervals = [[1,4],[3,6],[2,8]]
+    # Output: 2
+    # Input: intervals = [[1,4],[2,3]]
+    # Output: 1
+    def removeCoveredIntervals(self, intervals):
+        intervals.sort(key=lambda i:(i[0],-i[1]))
+        res = [intervals[0]]
+        for l,r in intervals[1:]:
+            prevL,prevR = res[-1]
+            if prevL <= l and prevR >= r:
+                continue
+            res.append([l,r])
+        return len(res)
+
+    def minDominoRotations(self, tops, bottoms):
+       for target in [tops[0],bottoms[0]]: #让其中一个做target
+           missingT,missingB=0,0
+           for i,pair in enumerate(zip(tops,bottoms)):
+               top,bottom = pair
+               if not (top == target or bottom == target):
+                    break
+               if top!= target:missingT +=1
+               if bottom != target:missingB+=1
+               if i == len(tops)-1:
+                    return min(missingT,missingB)
+       return -1
+
+
+    # 598. Range Addition II
+    # Input: m = 3, n = 3, ops = [[2,2],[3,3]]
+    # Output: 4
+    # Explanation: The maximum integer in M is 2,
+    # and there are four of it in M. So return 4.
+    # Input: m = 3, n = 3, ops = [[2,2],[3,3],[3,3],[3,3],[2,2]
+    # ,[3,3],[3,3],[3,3],[2,2],[3,3],[3,3],[3,3]]
+    # Output: 4
+    def maxCount(self, m, n, ops):
+        if len(ops) == 0:
+            return m * n
+        row = [0] * len(ops)
+        col = [0] * len(ops)
+        for i in range(0, len(ops)):
+            row[i] = int(ops[i][0])
+            col[i] = int(ops[i][1])
+        return min(row) * min(col)
+
+
+
+
+    # 680. Valid Palindrome II
+
+
+    def validPalindrome(self, s):
+        if s is None:
+            return False
+        left, right = self.finddifference(s, 0, len(s) - 1)
+        if left >= right:  # base case 本来就是palindrome
+            return True
+        return self.ispalindrome(s, left + 1, right) or self.ispalindrome(s, left, right - 1)
+
+    def ispalindrome(self, s, left, right):
+        left, right = self.finddifference(s, left, right)
+        return left >= right
+
+    def finddifference(self, s, left, right):
+        while left < right:
+            if s[left] != s[right]:
+                return left, right
+            left += 1
+            right -= 1
+        return left, right
+
+
+    # 1. Two Sum
+    # Input: nums = [2,7,11,15], target = 9
+    # Output: [0,1]
+    # Input: nums = [3,2,4], target = 6
+    # Output: [1,2]
+
+
+    def twoSum(self, nums, target):
+        h = {}
+        for i, num in enumerate(nums):
+            remainder = target - num
+            if n not in h:   # n得到余数如果再出现就代表找到了
+                h[remainder] = i
+            else:
+                return [h[remainder], i]
+
+
+
 
 
 
@@ -586,3 +678,7 @@ print(object.summaryRanges([0,2,3,4,6,8,9]))
 print(object.sortColors([0,1,2]))
 print(object.wiggleSort([1,5,1,1,6,4]))
 print(object.findDisappearedNumbers([4,3,2,7,8,2,3,1]))
+print(object.removeCoveredIntervals([[1,4],[3,6],[2,8]]))
+print(object.minDominoRotations([2,1,2,4,2,2],[5,2,6,2,3,2]))
+print(object.validPalindrome("abcdba"))
+print(object.two_sum5([2,7,11,15],24))

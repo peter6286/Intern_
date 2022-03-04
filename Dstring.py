@@ -230,7 +230,7 @@ class Solution:
             num2 = str(n2)+str(n1)
             return num1 > num2
 
-        for i in range(len(nums), 0, -1):  #bubble sort 每个确定一个最高位
+        for i in range(len(nums), 0, -1):  #bubble sort 每个确定一个最低位
             for j in range(i - 1):          # 相互比较的小循环让item到对应的位置
                 if not compare(nums[j], nums[j + 1]):
                     nums[j], nums[j + 1] = nums[j + 1], nums[j]
