@@ -50,7 +50,11 @@ class Solution:
         return res
 
 
-
+    # 318. Maximum Product of Word Lengths
+    # Input: words = ["abcw","baz","foo","bar","xtfn","abcdef"]
+    # Output: 16
+    # Input: words = ["a","ab","abc","d","cd","bcd","abcd"]
+    # Output: 4
 
     def maxProduct(self, words):
         mask, ans = [0] * len(words), 0

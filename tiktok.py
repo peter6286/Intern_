@@ -117,8 +117,7 @@ class CustomStack:
         if not self.stack:
             return -1
         x, v = self.stack.pop()
-        if self.stack:
-        	# inherit the value to add
+        if self.stack: # inherit the value to add
             self.stack[-1][-1] += v
         return x + v
 
@@ -130,9 +129,83 @@ class CustomStack:
         self.stack[k - 1][1] += val
 
 
+from itertools import *
+
+def pairwise(iterator, n=2):
+    it = chain(iterator, repeat(None, n - 1))
+    d = collections.deque(islice(it, n - 1), maxlen=n)
+    for a in it:
+      d.append(a)
+      yield tuple(d)
+
+
+def minDist(s):
+    d = 0
+    for a, b in pairwise(chain('A', s)):
+        d += pair_dist(a, b)
+    return d
+
+
+def pair_dist(a, b):
+    d = (ord(a) - ord(b)) % 26
+    return min(d, 26 - d)
+
+
+
+
+
+def min_max(s, k, n):
+    # k: length of substring
+    # n: number of 1
+    M = m = s[:k]
+    for sub_s in generate_sub(s, k, n):
+        M = max(M, sub_s)
+        m = min(m, sub_s)
+    return M, m
+
+
+def generate_sub(s, k, n):
+    cnt = 0  # counter for 1
+    for i in range(len(s) - k + 1):
+        sub_s = s[i: i + k]
+        if i == 0:
+            cnt = sub_s.count('1')
+        elif sub_s[-1] == '1':
+            cnt += 1
+
+        if cnt == n:
+            yield sub_s
+        if sub_s[0] == '1':
+            cnt -= 1
+
+
+def getSmallestAndLargest(s, k):
+    # Initialize min and max as
+    # first substring of size k
+    currStr = s[:k]
+    lexMin = currStr
+    lexMax = currStr
+
+    # Consider all remaining substrings.
+    # We consider every substring ending
+    # with index i.
+    for i in range(k, len(s)):
+        currStr = currStr[1: k] + s[i]
+        if (lexMax < currStr):
+            lexMax = currStr
+        if (lexMin > currStr):
+            lexMin = currStr
+
+    # Print result.
+    print(lexMin)
+
+
+
 
 names = ["Steven XL", "Steven XVI", "David IX", "Mary XV", "Mary XIII", "Mary XX"]
-print(sortAncestral(names))
-print(count3d(100))  # 828630254
+#print(sortAncestral(names))
+#print(count3d(100))  # 828630254
 #print(cnt(s, 1, 6))
-print(minSubArrayLen(7,[2, 1, 5, 2, 3, 2]))
+#print(minSubArrayLen(7,[2, 1, 5, 2, 3, 2]))
+#print(minDist("AZBG"))
+print(generate_sub())
