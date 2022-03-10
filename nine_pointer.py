@@ -158,6 +158,146 @@ class Solution:
         ksum(4,0,target)
         return res
 
+    # partition array 经典分区
+    def partitionarray(self,nums,k):
+        if not nums:
+            return 0
+        left,right = 0,len(nums)-1
+        while left <= right:  #如果用left<right 循环在left==right结束，还需一个判断nums[left]
+            # 左指针寻找比k大的数
+            while left <= right and nums[left]<k:
+                left +=1
+            # 右执政寻找比k小的数
+            while left <= right and nums[right]>=k:
+                right-=1
+            if left <= right :
+                #交换左右指针两个指针上的数都到了正确的index上
+                nums[left],nums[right]=nums[right],nums[left]
+                left+=1
+                right-=1
+        return left
+
+
+
+    # 144 · Interleaving Positive and Negative Numbers
+    #与wiggle sort不一样这里知道pivot是多少
+    #负多正少，left=1，right=length-1
+    #负少正多，left=0，right=length-2
+    #正负相等，left=0，right=length-1
+
+    def rearange(self,A):
+        neg_cnt = self.partiton(A)
+        pos_cnt = len(A)-neg_cnt
+        left = 1 if pos_cnt < neg_cnt else 0
+        right = len(A) - (2 if pos_cnt > neg_cnt else 1)
+        while left < right:
+            A[left],A[right]=A[right],A[left]
+            left+=2
+            right-=2
+        return A
+
+
+    def partiton(self,nums):
+        left,right = 0,len(nums)-1
+        while left <= right:
+            while left<=right and nums[left]<0:
+                left +=1
+            while left<= right and nums[right]>=0:
+                right -=1
+            if left<=right:
+                nums[left],nums[right]=nums[right],nums[left]
+                left+=1
+                right-=1
+        return left
+
+    # 324. Wiggle Sort II
+    def wiggleSort(self, nums):
+        nums.sort()
+        print(nums)
+        half = len(nums[::2])       #nums[1::2] 奇数位的index
+        print(nums[::2])            #nums[::2] 偶数位的index
+        nums[::2], nums[1::2] = nums[:half][::-1], nums[half:][::-1]  #nums里的偶数index放排序后中间较小的index
+        return nums
+
+
+    # 75. Sort Colors
+    def sortColors(self, nums):
+        # 因为sort中颜色用数字代表所以partion两次数字即可
+        self.partitioncolor(nums,1)
+        self.partitioncolor(nums,2)
+        return nums
+
+    def partitioncolor(self,nums,k):
+        # 指向<k区间的最后一个元素
+        last_smallp= -1
+        for i in range(len(nums)):
+            # 如果nums[i]<k，需要交换并右移指针
+            if nums[i]<k:
+                #指针先右移一位，指向当前元素对应位置
+                #然后进行交换
+                last_smallp +=1
+                nums[last_smallp],nums[i]=nums[i],nums[last_smallp]
+        return last_smallp +1
+
+
+
+    # 143 · Sort Colors II
+    def sortColors2(self, colors, k):
+        if not colors or len(colors)<2:
+            return
+        self.sort(colors,1,k,0,len(colors)-1)
+        return colors
+
+    def sort(self,colors,color_from,color_to,index_from,index_to):
+        if color_from == color_to:
+            return
+
+        mid_color = (color_from+color_to)//2
+        left,right = index_from,index_to
+        while left <= right:
+            while left <= right and colors[left]<mid_color:
+                left +=1
+            while left <= right and colors[right]>=mid_color:
+                right-=1
+            if left <= right:
+                colors[left],colors[right]=colors[right],colors[left]
+                left+=1
+                right-=1
+
+        self.sort(colors,color_from,mid_color,index_from,right)
+        self.sort(colors,mid_color+1,color_to,left,index_to)
+
+
+
+
+    # 283. Move Zeroes
+    def moveZeroes(self, nums):
+        fillpointer,movepointer = 0,0
+        while movepointer < len(nums):
+            if nums[movepointer] != 0:
+                if fillpointer != movepointer:
+                    nums[fillpointer],nums[movepointer]=nums[movepointer],nums[fillpointer]
+                fillpointer +=1
+            movepointer +=1
+        return nums
+
+    def moveZeroes2(self, nums):
+        l, r = 0, 0
+        while r < len(nums):
+            if nums[l] == 0:
+                if nums[r] != 0:
+                    nums[l], nums[r] = nums[r], nums[l]
+                    l += 1
+                    r += 1
+                else:
+                    r += 1
+            else:
+                l += 1
+                r += 1
+
+
+
+
 
 
 
@@ -172,3 +312,8 @@ print(object.threeSum([-1,0,1,2,-1,-4]))
 print(object.triangleNumber([2,2,3,4]))
 print(object.fourSumCount([1,2],[-2,-1],[-1,2],[0,2]))
 print(object.fourSum([1,0,-1,0,-2,2],0))
+print(object.rearange([-1, -2, -3, 4, 5, 6]))
+print(object.wiggleSort([-1, -2, -3, 4, 5, 6]))
+print(object.sortColors([2,0,2,1,1,0]))
+print(object.sortColors2([3,2,2,1,4],4))
+print(object.moveZeroes([0,1,0,3,12]))
