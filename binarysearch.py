@@ -1,4 +1,21 @@
 class Solution:
+
+    # 经典二分 必背
+    # 704. Binary Search
+    def binarysearch(self, nums, target):
+        if not nums:
+            return -1
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] < target:
+                left = mid + 1
+            elif nums[mid] > target:
+                right = mid - 1
+            else:
+                return mid
+        return -1
+
     # 278. First Bad Version
     # Input: n = 5, bad = 4
     # Output: 4
@@ -52,21 +69,25 @@ class Solution:
     # https://leetcode.com/problems/search-in-rotated-sorted-array/
 
     def search(self,nums,target):
-        left,right = 0 ,len(nums)-1
-        while left <= right:
-            mid = (left+right)//2
-            if nums[mid]==target:
-                return mid
-            if nums[left] <= nums[mid]:
-                if nums[left] <= target < nums[mid]:
-                    right = mid - 1
+        if not nums:
+            return -1
+        start, end = 0, len(nums) - 1
+        while start + 1 < end:
+            mid = (start + end) // 2
+            if nums[mid] > nums[end]:
+                if nums[start] <= target <= nums[mid]:
+                    end = mid
                 else:
-                    left = mid + 1
-            elif nums[left] > nums[mid]:
-                if nums[mid] < target <= nums[right]:
-                    left = mid + 1
+                    start = mid
+            else:
+                if nums[mid] <= target <= nums[end]:
+                    start = mid
                 else:
-                    right = mid - 1
+                    end = mid
+        if nums[start] == target:
+            return start
+        if nums[end] == target:
+            return end
         return -1
 
     # 81. Search in Rotated Sorted Array II
@@ -112,19 +133,18 @@ class Solution:
     # https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
 
     def findMin(self, nums):
-        res = nums[0]
-        left,right = 0,len(nums)-1
-        while left <= right:
-            if nums[left] < nums[right]:
-                res = min(res,nums[left])
-                break
-            mid = (left+right)//2
-            res = min(res,nums[mid])
-            if nums[left] <= nums[mid]: #继续往右边搜最小的
-                left = mid + 1
+        if not nums:
+            return -1
+        start, end = 0, len(nums) - 1
+        while start < end:
+            mid = (start + end) // 2
+            if nums[mid] > nums[end]:
+                start = mid+1
             else:
-                right = mid - 1     #往左边搜最小的
-        return res
+                end = mid
+        return min(nums[start], nums[end])
+
+
 
 
     # 162. Find Peak Element
@@ -259,6 +279,36 @@ class Solution:
                     LIS[i] = max(LIS[i],1+LIS[j])
         return max(LIS)
 
+    def findClosestElements(self, arr, k, x):
+        l, r = 0, len(arr) - 1
+
+        # Find index of x or the closest val to x
+        val, idx = arr[0], 0
+        while l <= r:
+            m = (l + r) // 2
+            curDiff, resDiff = abs(arr[m] - x), abs(val - x)
+            # 找离x最近的值
+            if (curDiff < resDiff or (curDiff == resDiff and arr[m] < val)):
+                #重新设置inde和val的值
+                val, idx = arr[m], m
+            # 然后再确认搜索的范围
+            if arr[m] < x:
+                l = m + 1
+            elif arr[m] > x:
+                r = m - 1
+            else:
+                break
+
+        l = r = idx
+        for i in range(k - 1):
+            if l == 0:
+                r += 1
+            elif r == len(arr) - 1 or x - arr[l - 1] <= arr[r + 1] - x:
+                l -= 1
+            else:
+                r += 1
+        return arr[l:r + 1]
+
 
 
 
@@ -276,12 +326,13 @@ class Solution:
 object = Solution()
 print(object.search([2,5,6,0,0,1,2],0))
 print(object.search2([1,0,1,1,1],0))
-print(object.findMin([3,4,5,1,2]))
+print(object.findMin([3,1,2]))
 print(object.findPeakElement([1,2,3,1]))
 print(object.searchRange([],0))
 print(object.intersection([4,9,5],[9,4,9,8,4]))
 print(object.intersection2([1,2,2,1],[2,2]))
 print(object.lengthOfLIS([10,9,2,5,3,7,101,18]))
+print(object.findClosestElements([1,2,3,4,5],4,-1))
 
 
 

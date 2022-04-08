@@ -145,9 +145,84 @@ class Solution:
 
 
 
+    # LC 153. Find Minimum in Rotated Sorted Array
+
+    def findMin(self, nums):
+        if not nums:
+            return -1
+        start,end = 0,len(nums)-1
+        while start+1 < end:
+            mid = (start+end)//2
+            if nums[mid]>nums[end]: #是下降的趋势所以将start设置为当前mid的点
+                start = mid
+            else:
+                end = mid       #是上升趋势 mid<end所以将end设置为当前mid的点
+        return min(nums[start],nums[end])
+
+
+
+    # 33.LC Search in Rotated Sorted Array
+
+    def search(self, nums, target):
+        if not nums :
+            return -1
+        start,end = 0,len(nums)-1
+        while start+1<end:
+            mid = (start+end)//2
+            if nums[mid]>nums[end]:  # mid处于比较大的那一段
+                if nums[start]<=target<=nums[mid]:  #检查是不是在范围中
+                    end = mid
+                else:           # target不在当前范围中在尾端中
+                    start = mid
+            else:           # mid处于比较小的那一段
+                if nums[mid]<=target<=nums[end]:    #检查是不是在范围中
+                    start = mid
+                else:           # target不在当前范围中在头端中
+                    end = mid
+        if nums[start]==target:
+            return start
+        if nums[end]==target:
+            return end
+        return -1
+
+
+    # LC 162. Find Peak Element
+    def findPeakElement(self, nums):
+        left, right = 0, len(nums) - 1
+        while left < right:
+            mid = (left + right) // 2
+            if nums[mid] > nums[mid + 1] and nums[mid] > nums[mid - 1]:
+                return mid
+            if nums[mid] < nums[mid + 1]:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return left
+
+    def findPeak2(self, nums):
+        start, end = 1, len(nums) - 2
+        while start + 1 < end:
+            mid = (start + end) // 2
+            if nums[mid] < nums[mid - 1]:
+                end = mid
+            elif nums[mid] < nums[mid + 1]:
+                start = mid
+            else:
+                return mid
+        return end if nums[start] < nums[end] else start
+
+
+
+
+
+
+
+
 
 
 
 object = Solution()
 print(object.findClosestElements2([1,2,3,4,5],4,3))
 print(object.peakIndexInMountainArray([0,10,5,2]))
+print(object.findMin([3,4,5,1,2]))
+print(object.findPeakElement([1,2,3,4,1]))
