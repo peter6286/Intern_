@@ -46,6 +46,17 @@ class solution:
             photo.insert(index[i],nums[i])
         return photo
 
+    def two_sum5(self, nums, target):
+        count = 0
+        for i,num in enumerate(nums):
+            for item in (nums[i+1:]):
+                if num + item <= target:
+                    print(num,item)
+                    count +=1
+        return count
+
+
+
 
 
 
@@ -61,3 +72,4 @@ object = solution()
 print(object.frequencySort([1,1,2,2,2,3]))
 print(object.countVowelPermutation(5))
 print(object.createTargetArray([0,1,2,3,4],[0,1,2,1,2]))
+print(object.two_sum5([2,7,11,15],24))

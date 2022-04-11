@@ -3,21 +3,17 @@ class Solution:
     # 经典二分 必背
     # 704. Binary Search
     def binarysearch(self,nums,target):
-        if not nums :
+        if not nums:
             return -1
-        start,end = 0,len(nums)-1
-        while start+1<end:
-            mid = (start+end)//2
-            if nums[mid]<target:
-                start = mid
-            elif nums[mid]==target:
-                end = mid
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] < target:
+                left = mid + 1
+            elif nums[mid] > target:
+                right = mid - 1
             else:
-                end = mid
-        if nums[start]==target:
-            return start
-        if nums[end]==target:
-            return end
+                return mid
         return -1
 
 
