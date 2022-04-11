@@ -1,3 +1,4 @@
+import  math
 class Solution:
 
     # 经典二分 必背
@@ -323,6 +324,24 @@ class Solution:
         return arr[l:r + 1]
 
 
+
+    # 875. Koko Eating Bananas
+    def minEatingSpeed(self,piles,h):
+        start,end = 1,max(piles)
+        res = end
+        while start <= end:
+            k = (start + end ) // 2
+            hours = 0
+            for p in piles:
+                hours += math.ceil(p/k)
+            if hours <= h:
+                res = min(res,k)
+                end = k - 1
+            else :
+                start = k + 1
+        return res
+
+
 object = Solution()
 print(object.search([2, 5, 6, 0, 0, 1, 2], 0))
 print(object.search2([1, 0, 1, 1, 1], 0))
@@ -333,3 +352,4 @@ print(object.intersection([4, 9, 5], [9, 4, 9, 8, 4]))
 print(object.intersection2([1, 2, 2, 1], [2, 2]))
 print(object.lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]))
 print(object.findClosestElements([1, 2, 3, 4, 5], 4, -1))
+print(object.minEatingSpeed([3,6,7,11],8))
