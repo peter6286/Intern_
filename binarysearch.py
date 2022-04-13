@@ -193,6 +193,16 @@ class Solution:
     # Input: nums = [], target = 0
     # Output: [-1,-1]
     # https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+    def searchRange(self,nums,target):
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            if nums[left] != target:
+                left += 1
+            elif nums[right] != target:
+                right -= 1
+            elif nums[left] == target and nums[right] == target:
+                return [left, right]
+        return [-1, -1]
 
     # 74. Search a 2D Matrix
 
@@ -342,6 +352,24 @@ class Solution:
         return res
 
 
+
+    def smallestDivisor(self,nums,threshold):
+        left, right = 1, max(nums)
+        res = max(nums)
+        while left <= right:
+            mid = (left + right) // 2
+            temps = 0
+            for num in nums:
+                temps += math.ceil(num / mid)
+            if temps <= threshold:
+                res = min(res, mid)
+                right = mid - 1
+            else:
+                left = mid + 1
+        return res
+
+
+
 object = Solution()
 print(object.search([2, 5, 6, 0, 0, 1, 2], 0))
 print(object.search2([1, 0, 1, 1, 1], 0))
@@ -353,3 +381,4 @@ print(object.intersection2([1, 2, 2, 1], [2, 2]))
 print(object.lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]))
 print(object.findClosestElements([1, 2, 3, 4, 5], 4, -1))
 print(object.minEatingSpeed([3,6,7,11],8))
+print(object.smallestDivisor([1,2,5,9],6))
