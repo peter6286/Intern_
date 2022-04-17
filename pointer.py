@@ -188,12 +188,11 @@ class Solution:
 
     def longestMountain(self,arr):
         longestHeight = 0
-        currHeight = 0
 
-        # negelect very first and very last element as an not be peak at any cost
+        # 忽略第一个和最后一个元素因为他不会是peak元素
         currIdx = 1
         while currIdx < len(arr) - 1:
-            # search for peak
+            # 寻找peak的元素
             isPeak = arr[currIdx] > arr[currIdx - 1] and arr[currIdx] > arr[currIdx + 1]
             if not isPeak:
                 # if not peak then continue
@@ -201,18 +200,21 @@ class Solution:
                 continue
             # if we found peak - now time to expand to left and right to measure height
             # start with second adjacent from left and right
+            # 找到符合peak的index 往左右两边拓展
+            # 检查的时候已经确认index 所以从第二个开始
             leftIdx = currIdx - 2
             rightIdx = currIdx + 2
-            # check bounds
+            # 检查是否在范围之内
             while leftIdx >= 0 and arr[leftIdx] < arr[leftIdx + 1]:
                 leftIdx -= 1
 
             while rightIdx < len(arr) and arr[rightIdx] < arr[rightIdx - 1]:
                 rightIdx += 1
-            # calculate current height
+            # 计算当前的大小然后比较选出最大的
             currHeight = rightIdx - leftIdx - 1
             longestHeight = max(longestHeight, currHeight)
 
+            # 因为已经检查过前后的两位pointer所以直接将current移动
             currIdx = rightIdx
         return longestHeight
 
