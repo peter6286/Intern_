@@ -1,3 +1,9 @@
+class ListNode(object):
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
 class Solution:
 
     # 经典必备quick sort
@@ -139,7 +145,6 @@ class Solution:
         self.quicksort(nums, 0, len(nums) - 1)
         return nums[-k]
 
-
     # 347. Top K Frequent Elements
 
     def topKFrequent(self, nums, k):
@@ -172,7 +177,6 @@ class Solution:
                 d[n] -= 1
         return res
 
-
     # 350. Intersection of Two Arrays II
     def intersect(self, nums1, nums2):
         d = {}
@@ -186,7 +190,7 @@ class Solution:
                 d[n] -= 1
         return res
 
-    def longestMountain(self,arr):
+    def longestMountain(self, arr):
         longestHeight = 0
 
         # 忽略第一个和最后一个元素因为他不会是peak元素
@@ -218,9 +222,7 @@ class Solution:
             currIdx = rightIdx
         return longestHeight
 
-
-
-    def findpeak(self,nums):
+    def findpeak(self, nums):
         left, right = 0, len(nums) - 1
         while left < right:
             mid = (left + right) // 2
@@ -232,6 +234,45 @@ class Solution:
                 right = mid - 1  # 左边的点比较大移动到左边上的点后再比较
         return left
 
+    def multiply(self, num1, num2):
+        num1, num2 = int(num1), int(num2)
+        return str(num1 * num2)
+
+    # 21. Merge Two Sorted Lists
+    def mergeTwoLists(self, list1, list2):
+        dummy = ListNode()
+        tail = dummy
+        while list1 and list2:
+            if list1.val < list2.val:
+                tail.next = list1
+                list1 = list1.next
+            else:
+                tail.next = list2
+                list2 = list2.next
+            tail = tail.next
+        if list1:
+            tail.next = list1
+        elif list2:
+            tail.next = list2
+        return dummy.next
+
+    # 86. Partition List
+    def partition(self, head, x):
+        dummy_l, dummy_r = ListNode(), ListNode()
+        left, right = dummy_l, dummy_r
+        while head:
+            if head.val < x:
+                left.next = head
+                left = left.next
+            else:
+                right.next = head
+                right = right.next
+            head = head.next
+        left.tail = dummy_r.next
+        right.tail = None
+        return dummy_l.next
+
+
 object = Solution()
 print(object.sortColors([2, 0, 2, 1, 1, 0]))
 print(object.removeDuplicates([0, 0, 1, 1, 1, 2, 2, 3, 3, 4]))
@@ -239,5 +280,6 @@ print(object.removeDuplicates2([0, 0, 1, 1, 1, 1, 2, 3, 3]))
 print(object.merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3))
 print(object.moveZeroes([0, 1, 0, 3, 12]))
 print(object.topKFrequent([1, 1, 1, 2, 2, 3], 2))
-print(object.findpeak([2,1,4,7,3,2,5]))
-print(object.longestMountain([0,1,2,3,4,5,6,7,8,9]))
+print(object.findpeak([2, 1, 4, 7, 3, 2, 5]))
+print(object.longestMountain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]))
+print(object.multiply("2", "3"))
