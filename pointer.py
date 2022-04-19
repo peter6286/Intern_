@@ -190,6 +190,7 @@ class Solution:
                 d[n] -= 1
         return res
 
+    # 845. Longest Mountain in Array
     def longestMountain(self, arr):
         longestHeight = 0
 
@@ -271,6 +272,17 @@ class Solution:
         left.tail = dummy_r.next
         right.tail = None
         return dummy_l.next
+
+    # 141. Linked List Cycle
+    def hasCycle(self, head):
+        numset = set()
+        while head:
+            if head not in numset:
+                numset.add(head)
+            else:
+                return True
+            head = head.next
+        return False
 
 
 object = Solution()
