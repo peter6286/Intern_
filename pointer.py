@@ -285,6 +285,32 @@ class Solution:
         return False
 
 
+
+    # 160. Intersection of Two Linked Lists
+    def getIntersectionNode(self,headA,headB):
+        nodeset = set()
+        while headA:
+            nodeset.add(headA)
+            headA = headA.next
+        while headB:
+            if headB not in nodeset:
+                headB = headB.next
+            else:
+                return headB
+        return None
+
+
+
+    # 234. Palindrome Linked List
+    def isPalindrome(self,head):
+        num = []
+        while head:
+            num.append((head.val))
+            head = head.next
+        return num == num[::-1]
+
+
+
 object = Solution()
 print(object.sortColors([2, 0, 2, 1, 1, 0]))
 print(object.removeDuplicates([0, 0, 1, 1, 1, 2, 2, 3, 3, 4]))
