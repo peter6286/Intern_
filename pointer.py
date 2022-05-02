@@ -284,10 +284,8 @@ class Solution:
             head = head.next
         return False
 
-
-
     # 160. Intersection of Two Linked Lists
-    def getIntersectionNode(self,headA,headB):
+    def getIntersectionNode(self, headA, headB):
         nodeset = set()
         while headA:
             nodeset.add(headA)
@@ -299,15 +297,198 @@ class Solution:
                 return headB
         return None
 
-
-
     # 234. Palindrome Linked List
-    def isPalindrome(self,head):
+    def isPalindrome1(self, head):
         num = []
         while head:
             num.append((head.val))
             head = head.next
         return num == num[::-1]
+
+    # Lintcode 391
+
+    def countairplane(self, airplanes):
+        onair = {}
+        for i in airplanes:
+            onair[i.start] = onair.get(i.start, 0) + 1
+            onair[i.end] = onair.get(i.end, 0) - 1
+        tmp = 0
+        ans = 0
+        for i in sorted(onair.keys()):
+            tmp += onair[i]
+            ans = max(tmp, ans)
+        return ans
+
+    # 56. Merge Intervals
+    def merge2(self, intervals):
+        intervals.sort(key=lambda i: i[0])
+        output = [intervals[0]]
+        for start, end in intervals[1:]:
+            lastend = output[-1][1]
+            if lastend >= start:
+                output[-1][1] = max(end, lastend)
+            else:
+                output.append([start, end])
+        return output
+
+    # 57. Insert Interval
+    def insert(self, intervals, newInterval):
+        intervals.append(newInterval)
+        intervals.sort(key=lambda i: i[0])
+        output = [intervals[0]]
+        for start, end in intervals[1:]:
+            lastend = output[-1][1]
+            if lastend >= start:
+                output[-1][1] = max(end, lastend)
+            else:
+                output.append([start, end])
+        return output
+
+    # 986. Interval List Intersections
+    def intervalIntersection(self, firstList, secondList):
+        i = j = 0
+        res = []
+        while i < len(firstList) and j < len(secondList):
+            low = max(firstList[i][0], secondList[j][0])
+            high = min(firstList[i][1], secondList[j][1])
+            if low <= high:
+                res.append([low, high])
+            if firstList[i][1] <= secondList[j][1]:
+                i += 1
+            else:
+                j += 1
+        return res
+
+    # 5. Longest Palindromic Substring
+    def longestPalindrome(self, s):
+        res = ""
+        longest = 0
+        for i in range(len(s)):
+            l, r = i, i
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                if (r - l + 1) > longest:
+                    res = s[l:r + 1]
+                    longest = r - l + 1
+                l -= 1
+                r += 1
+            l, r = i, i + 1
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                if (r - l + 1) > longest:
+                    res = s[l:r + 1]
+                    longest = r - l + 1
+                l -= 1
+                r += 1
+        return res
+
+    # 345. Reverse Vowels of a String
+    def reverseVowels(self, s):
+        s = list(s)
+        vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']
+        i, j = 0, len(s) - 1
+
+        while i < j:
+            if s[i] not in vowels:
+                i += 1
+                continue
+
+            if s[j] not in vowels:
+                j -= 1
+                continue
+
+            s[i], s[j] = s[j], s[i]
+            i += 1
+            j -= 1
+
+        return ''.join(s)
+
+    # 125. Valid Palindrome
+    def isPalindrome2(self, s):
+        l, r = 0, len(s) - 1
+        while l < r:
+            while l < r and not self.dele(s[l]):
+                l += 1
+            while l < r and not self.dele(s[r]):
+                r -= 1
+            if l < r and s[l].lower() != s[r].lower():
+                return False
+            l += 1
+            r -= 1
+        return True
+
+    def dele(self, char):
+        return char.isalnum()
+
+    # 680. Valid Palindrome II
+    def validPalindrome(self, s):
+        l, r = 0, len(s) - 1
+        while l < r:
+            if s[l] != s[r]:
+                skipl = s[l + 1:r + 1]
+                skipr = s[l:r]
+                return (skipl == skipl[::-1] or skipr == skipr[::-1])
+            l += 1
+            r -= 1
+
+        return True
+
+
+    # 986. Interval List Intersections
+
+    def lengthOfLongestSubstring(self, s):
+        if len(s) == 0:
+            return 0
+        if len(s) == 1:
+            return 1
+        size = 0
+        for i in range(len(s)):
+            theset = set()
+            for j in range(i, len(s)):
+                if s[j] not in theset:
+                    theset.add(s[j])
+                else:
+                    break
+            size = max(size, len(theset))
+        return size
+
+
+
+    # 11. Container With Most Water
+
+    def maxArea(self, height):
+        left, right = 0, len(height) - 1
+        maxwidth = len(height) - 1
+        area = 0
+        for width in range(maxwidth, 0, -1):
+            if height[left] < height[right]:
+                area = max(area, height[left] * width)
+                left += 1
+            else:
+                area = max(area, height[right] * width)
+                right -= 1
+        return area
+
+
+
+    # 209. Minimum Size Subarray Sum
+    def minSubArrayLen(self, target, nums):
+        if not nums or not target:
+            return 0
+        left, right = 0, 0
+        count, total = float("inf"), nums[0]
+        while right <= len(nums) - 1:
+            if total < target:
+                right += 1
+                if right <= len(nums) - 1:
+                    total += nums[right]
+            elif total >= target:
+                count = min(right - left + 1, count)
+                total -= nums[left]
+                left += 1
+        return count if count != float("inf") else 0
+
+
+
+
 
 
 
@@ -321,3 +502,8 @@ print(object.topKFrequent([1, 1, 1, 2, 2, 3], 2))
 print(object.findpeak([2, 1, 4, 7, 3, 2, 5]))
 print(object.longestMountain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]))
 print(object.multiply("2", "3"))
+print(object.merge2([[1, 4], [5, 6]]))
+print(object.insert([[1, 3], [6, 9]], [2, 5]))
+print(object.reverseVowels("leetcode"))
+print(object.lengthOfLongestSubstring("abcabcbb"))
+print(object.minSubArrayLen(7,[2,3,1,2,4,3]))
